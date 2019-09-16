@@ -1,0 +1,24 @@
+{% extends "rwc19/base.html" %}
+
+{% block pagerefresh %}<meta http-equiv="refresh" content="30">{% endblock %}
+
+{% block title %}
+Openwater swimmers RWC 2019 competition
+{% endblock %}
+
+{% block web-body %}
+
+  <div id="players">
+  <h1>Player List</h1>
+    {% if playerList %}
+      <div class="list-group">
+      {% for player in playerList%}
+         <p>{{ player.user.username }} - Points {{ player.totalPoints }}</p>
+      {% endfor %}
+      </div>
+    {% else %}
+      <p>No players yet!</p>>
+    {% endif %}
+  </div>
+ 
+{% endblock %}

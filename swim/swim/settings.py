@@ -25,7 +25,7 @@ SECRET_KEY = '%+0ne-h+^-7!kw84)qr^8-9#&*t#o5-z=59$q#1!-#a4ifacmo'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['.west.kiwi']
 
 
 # Application definition
@@ -117,7 +117,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'NZ'
 
 USE_I18N = True
 
@@ -130,3 +130,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# Login settings
+LOGOUT_REDIRECT_URL = "rwc19:index"
+LOGIN_URL = "/accounts/login"

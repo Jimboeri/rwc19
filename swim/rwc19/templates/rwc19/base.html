@@ -1,0 +1,49 @@
+{% load static %}
+<!doctype html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="{% static "rwc19/style.css" %}">    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    {% block pagerefresh %}<meta http-equiv="refresh" content="3600">{% endblock %}
+    <title>
+	    {% block title %}
+        Openwater swimmers RWC 2019 competition
+      {% endblock %}
+    </title>
+  </head>
+  <body class="iot_background">
+    <div class="container-fluid">
+      <div id="logged_in">
+        {% if user.is_authenticated %}
+          Hi {{ user.username|capfirst }}
+        {% else %}
+          Not logged in 
+        {% endif %}
+      </div>
+      <div id="pg_header">
+        <img src="{% static 'rwc19/Character6.jpg' %}" class = "logo">
+        <span class="heading_text">RWC 19 competition</span>
+      </div>
+
+      {% block web-body %}
+        RWC 19
+      {% endblock %}
+      <!-- START FOOTER -->
+      <div class="footer">
+        <table class="footer">
+          <tr>
+            <td class="content-block">
+              <span class="apple-link">Jim's amazing system</span>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <!-- END FOOTER -->
+    </div>
+  </body>
+</html>

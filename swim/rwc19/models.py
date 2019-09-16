@@ -9,6 +9,7 @@ from django.utils import timezone
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     phoneNumber = models.CharField(max_length=50, blank=True, null=True)
+    totalPoints = models.FloatField(default=0, help_text="Total For and away points")
     
     def __str__(self):
         return self.user.username
@@ -26,6 +27,7 @@ def save_user_profile(sender, instance, **kwargs):
 class Team(models.Model):
     teamID = models.CharField(max_length=30)
     descr = models.TextField(blank=True, null=True)
+    pool = models.CharField(max_length=1, blank=True, null=True)
     
     def __str__(self):
         return self.teamID
@@ -34,8 +36,8 @@ class Game(models.Model):
     Team1 = models.ForeignKey(Team, on_delete=models.CASCADE)
     Team2 = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="team2",)
     gamedate = models.DateTimeField(blank=True, null=True)
-    score1 = models.IntegerField(default=0, help_text="Score of 1st teame")
-    score2 = models.IntegerField(default=0, help_text="Score of 2nd teame")
+    score1 = models.IntegerField(default=0, help_text="Score of 1st team")
+    score2 = models.IntegerField(default=0, help_text="Score of 2nd team")
 
     def __str__(self):
         return("{} v {}".format(self.Team1, self.Team2))
@@ -43,8 +45,10 @@ class Game(models.Model):
 class Prediction(models.Model):
     player = models.ForeignKey(Profile, on_delete=models.CASCADE)
     game = models.ForeignKey(Game, on_delete=models.CASCADE)
-    score1 = models.IntegerField(default=0, help_text="Score of 1st teame")
-    score2 = models.IntegerField(default=0, help_text="Score of 2nd teame")
+    score1 = models.IntegerField(default=0, help_text="Score of 1st team")
+    score2 = models.IntegerField(default=0, help_text="Score of 2nd team")
+    result = models.BooleanField(default=False)
+    points = models.FloatField(default=0, help_text="For and away points")
 
     def __str__(self):
         return("Player : {}, Game : {}".format(self.player, self.game))
