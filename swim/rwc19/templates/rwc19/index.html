@@ -8,6 +8,17 @@ Openwater swimmers RWC 2019 competition
 
 {% block web-body %}
 
+<div id="picks">
+  <h1>My picks</h1>
+    {% if user.profile.prediction_set.all %}
+      {% for pick in user.profile.prediction_set.all %}
+        {{ pick.game }}
+      {% endfor %}
+    {% else %}
+      No Predictions
+    {% endif %}
+  </div>
+  <a href="{% url 'rwc19:pickUpdate' %}">Change my picks</a>
   <div id="players">
   <h1>Player List</h1>
     {% if playerList %}

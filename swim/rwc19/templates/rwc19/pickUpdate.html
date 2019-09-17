@@ -1,0 +1,26 @@
+{% extends "rwc19/base.html" %}
+
+{% block title %}
+Your picks
+{% endblock %}
+
+{% block web-body %}
+<div class="iot_background">
+  <div id="node-header"><h3>Update Pick information</h3></div>
+    <div id="node_detail" class="content_block">
+      <div id="node_det_table">
+        <form action="{% url 'rwc19:pickUpdate' %}" method="POST">
+          {% csrf_token %}
+          <table>
+            {{ form.as_table }}
+          </table>
+        <input type="submit" value="Submit">
+        <span id="node_cancel_button" class="cancel_button">
+          <a href="{% url 'rwc19:index' %}" class="btn btn-link btn-outline-warning" role="button">Cancel</a>
+        </span>
+      </form>
+    </div>
+  </div>
+ 
+</div>
+{% endblock %}
