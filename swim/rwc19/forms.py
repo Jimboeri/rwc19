@@ -7,7 +7,7 @@ from .models import Prediction
 class PickDetailForm(forms.ModelForm):
     class Meta:
         model = Prediction
-        fields = ['score1', 'score1']
+        fields = ['score1', 'score2']
         #widgets = {
         #    'descr': forms.Textarea(attrs={'rows': 3}),
         #}

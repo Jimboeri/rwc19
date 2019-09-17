@@ -25,7 +25,7 @@ SECRET_KEY = '%+0ne-h+^-7!kw84)qr^8-9#&*t#o5-z=59$q#1!-#a4ifacmo'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['.west.kiwi', 'localhost']
+ALLOWED_HOSTS = ['.west.kiwi', 'localhost', '.west.net.nz']
 
 
 # Application definition
