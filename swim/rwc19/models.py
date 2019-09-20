@@ -38,6 +38,8 @@ class Game(models.Model):
     gamedate = models.DateTimeField(blank=True, null=True)
     score1 = models.IntegerField(default=0, help_text="Score of 1st team")
     score2 = models.IntegerField(default=0, help_text="Score of 2nd team")
+    started = models.BooleanField(default=False)
+    finished = models.BooleanField(default=False)
 
     def __str__(self):
         return("{} v {}".format(self.Team1, self.Team2))
@@ -49,6 +51,8 @@ class Prediction(models.Model):
     score2 = models.IntegerField(default=0, help_text="Score of 2nd team")
     result = models.BooleanField(default=False)
     points = models.FloatField(default=0, help_text="For and away points")
+    textname = models.CharField(max_length=50, blank=True, null=True)
+    started = models.BooleanField(default=False)
 
     def __str__(self):
         return("Player : {}, Game : {}".format(self.player, self.game))
