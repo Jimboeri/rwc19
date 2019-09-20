@@ -53,6 +53,10 @@ class Prediction(models.Model):
     points = models.FloatField(default=0, help_text="For and away points")
     textname = models.CharField(max_length=50, blank=True, null=True)
     started = models.BooleanField(default=False)
+    gamedate = models.DateTimeField(blank=True, null=True)
+
+    class Meta:
+        ordering = ["gamedate"]
 
     def __str__(self):
         return("Player : {}, Game : {}".format(self.player, self.game))

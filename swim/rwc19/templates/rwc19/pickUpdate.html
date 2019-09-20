@@ -12,12 +12,14 @@ Your picks
         <form action="{% url 'rwc19:pickUpdate' %}" method="POST">
           {% csrf_token %}
           {{ formset.management_form }}
+          {{ form.non_field_errors}}
           <table>
           {% for form in formset %}
             <tr>
-              <td>{{form.textname.value}}</td>
+              <td>{{form.instance.textname}}</td>
               <td>{{ form.score1 }}</td>
               <td>{{ form.score2 }}</td>
+              <td>{{ form.id }}</td>
             </tr>
             {% endfor %}
           </table>

@@ -24,24 +24,31 @@ def makePicks(request):
     for g in games:
         p, created = Prediction.objects.get_or_create(player = request.user.profile, game = g)
         p.textname = "{} v {}".format(g.Team1, g.Team2)
-        if g.gamedate > timezone.make_aware(datetime.datetime.now(), timezone.get_current_timezone()):
+        p.gamedate = g.gamedate
+        if g.gamedate < timezone.make_aware(datetime.datetime.now(), timezone.get_current_timezone()):
             p.started = True
+            g.started = True
         else:
             p.started = False
         p.save()
     usrProfile = Profile.objects.get(user=request.user)
-    PickFormSet = modelformset_factory(Prediction, fields = ('score1', 'score2', 'textname'), extra=0)
-    fPicks = PickFormSet(queryset = Prediction.objects.filter(player=usrProfile))
+    PickFormSet = modelformset_factory(Prediction, fields = ('id', 'score1', 'score2'), extra=0)
+    #fPicks = PickFormSet(queryset = Prediction.objects.filter(player=usrProfile))
 
     if request.method == 'POST':
-        #formset = picksFormSet(request.POST, request.FILES, queryset = picks)
+        fPicks = PickFormSet(request.POST, queryset = Prediction.objects.filter(player=usrProfile).exclude(started=True).order_by('gamedate'))
+        
         print(len(fPicks))
         if fPicks.is_valid():
             fPicks.save()
             return HttpResponseRedirect(reverse('rwc19:index'))
+        else:
+            print("invalid response, error = {}".format(fPicks.errors))
+            for x in fPicks:
+                print(x.errors)
      # if a GET (or any other method) we'll create a blank form
     else:
-        #formset = picksFormSet(request.POST, queryset = picks)
-        print(len(fPicks))
+        fPicks = PickFormSet(queryset = Prediction.objects.filter(player=usrProfile).exclude(started=True).order_by('gamedate'))
+        
     context = {'formset': fPicks}
     return render(request, 'rwc19/pickUpdate.html', context)
