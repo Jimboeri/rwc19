@@ -10,11 +10,17 @@ Your picks
     <div id="node_detail" class="content_block">
       <div id="node_det_table">
         <form action="{% url 'rwc19:pickUpdate' %}" method="POST">
+          {% csrf_token %}
           {{ formset.management_form }}
-          
+          <table>
           {% for form in formset %}
-            {{ form }}
-          {% endfor %}
+            <tr>
+              <td>{{form.textname.value}}</td>
+              <td>{{ form.score1 }}</td>
+              <td>{{ form.score2 }}</td>
+            </tr>
+            {% endfor %}
+          </table>
         <input type="submit" value="Submit">
         <span id="node_cancel_button" class="cancel_button">
           <a href="{% url 'rwc19:index' %}" class="btn btn-link btn-outline-warning" role="button">Cancel</a>
