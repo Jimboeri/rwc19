@@ -20,9 +20,9 @@
     <div class="container-fluid">
       <div id="logged_in">
         {% if user.is_authenticated %}
-          Hi {{ user.username|capfirst }}
+          Hi {{ user.username|capfirst }} <a href="{% url 'logout' %}">logout</a>
         {% else %}
-          Not logged in 
+          <a href="{% url 'login' %}">login</a>
         {% endif %}
       </div>
       <div id="pg_header">

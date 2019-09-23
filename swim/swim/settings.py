@@ -25,7 +25,7 @@ SECRET_KEY = '%+0ne-h+^-7!kw84)qr^8-9#&*t#o5-z=59$q#1!-#a4ifacmo'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['.west.kiwi', 'localhost', '.west.net.nz']
+ALLOWED_HOSTS = ['.west.kiwi', 'localhost', '.west.net.nz', '192.168.3.9']
 
 
 # Application definition
@@ -134,3 +134,12 @@ STATIC_URL = '/static/'
 # Login settings
 LOGOUT_REDIRECT_URL = "rwc19:index"
 LOGIN_URL = "/accounts/login"
+LOGIN_REDIRECT_URL = "rwc19:index"
+
+# Email settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'rwc19@west.net.nz'
+EMAIL_HOST_PASSWORD = 'Rwhuck1tt'

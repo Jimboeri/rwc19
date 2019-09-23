@@ -65,7 +65,7 @@ body {
 
 
 .logo {
-  max-width: 30%;
+  max-width: 15%;
   padding: 10px 10px 10px 10px;
 }
 
@@ -74,7 +74,7 @@ body {
 }
 
 .heading_text {
-  font-size: 2vw;
+  font-size: 4vw;
   font-weight: bold;
 }
 

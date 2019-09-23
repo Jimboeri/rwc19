@@ -40,7 +40,7 @@ Openwater swimmers RWC 2019 competition
     {% if playerList %}
       <div class="list-group">
       {% for player in playerList%}
-         <p>{{ player.user.username }} - Points {{ player.totalPoints }}</p>
+         <p><a href="{% url 'rwc19:playerDets' player.user.id %}">{{ player.user.username }}</a> - Points {{ player.totalPoints }}</p>
       {% endfor %}
       </div>
     {% else %}

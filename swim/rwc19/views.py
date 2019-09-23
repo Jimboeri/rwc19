@@ -52,3 +52,10 @@ def makePicks(request):
         
     context = {'formset': fPicks}
     return render(request, 'rwc19/pickUpdate.html', context)
+
+def playerDets(request, player_id):
+    player = get_object_or_404(Profile, user = player_id)
+    picks = player.prediction_set.all().order_by('gamedate')
+
+    context = {'player': player, 'picks':picks}
+    return render(request, 'rwc19/playerDets.html', context)

@@ -28,6 +28,9 @@ class Team(models.Model):
     teamID = models.CharField(max_length=30)
     descr = models.TextField(blank=True, null=True)
     pool = models.CharField(max_length=1, blank=True, null=True)
+
+    class Meta:
+        ordering = ["teamID"]
     
     def __str__(self):
         return self.teamID
@@ -40,6 +43,9 @@ class Game(models.Model):
     score2 = models.IntegerField(default=0, help_text="Score of 2nd team")
     started = models.BooleanField(default=False)
     finished = models.BooleanField(default=False)
+
+    class Meta:
+        ordering = ["gamedate"]
 
     def __str__(self):
         return("{} v {}".format(self.Team1, self.Team2))
