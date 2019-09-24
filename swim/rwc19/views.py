@@ -28,6 +28,7 @@ def makePicks(request):
         if g.gamedate < timezone.make_aware(datetime.datetime.now(), timezone.get_current_timezone()):
             p.started = True
             g.started = True
+            p.calcScore()
         else:
             p.started = False
         p.save()

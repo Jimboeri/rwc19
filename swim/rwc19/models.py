@@ -66,3 +66,23 @@ class Prediction(models.Model):
 
     def __str__(self):
         return("Player : {}, Game : {}".format(self.player, self.game))
+
+    def calcScore(self):
+        # first determine if the player got the result right
+        win_diff = 0.0
+        if self.game.score1 > self.game.score2:
+            if self.score1 > self.score2:
+                self.result = True
+                win_diff = abs(self.game.score1 - self.score1)/2
+        elif self.game.score1 == self.game.score2:
+            if self.score1 == self.score2:
+                self.result = True
+        elif self.game.score1 < self.game.score2:
+            if self.score1 < self.score2:
+                self.result = True
+                win_diff = abs(self.game.score2 - self.score2)/2
+        
+        self.points = win_diff
+        
+
+        
