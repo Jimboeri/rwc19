@@ -11,7 +11,7 @@ Game Edit
       <div id="node_det_table">
         <form action="{% url 'rwc19:gameEdit' gForm.instance.id %}" method="POST">
           {% csrf_token %}
-          
+          {{ formset.management_form }}
           {{ gForm.non_field_errors}}
           {{ gForm.instance.Team1 }} v {{ gForm.instance.Team2 }}
            <table>
@@ -30,15 +30,22 @@ Game Edit
                 <td>{{ gForm.score2 }}</td>
               </tr>
               <tr>
-                <td>Started</td>
-                <td>{{ gForm.started }}</td>
-              </tr>
-              <tr>
                 <td>Finished</td>
                 <td>{{ gForm.finished }}</td>
               </tr>
          
           </table>
+          <h2>Update player picks</h2>
+          <table>
+            {% for form in formset %}
+              <tr>
+                <td>{{form.instance.player.user.username}}</td>
+                <td>{{ form.score1 }}</td>
+                <td>{{ form.score2 }}</td>
+                <td>{{ form.id }}</td>
+              </tr>
+              {% endfor %}
+            </table>
         <input type="submit" value="Submit">
         <span id="node_cancel_button" class="cancel_button">
           <a href="{% url 'rwc19:index' %}" class="btn btn-link btn-outline-warning" role="button">Cancel</a>

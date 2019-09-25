@@ -10,6 +10,7 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     phoneNumber = models.CharField(max_length=50, blank=True, null=True)
     totalPoints = models.FloatField(default=0, help_text="Total For and away points")
+    is_admin = models.BooleanField(default=False)
     
     def __str__(self):
         return self.user.username
@@ -51,6 +52,7 @@ class Game(models.Model):
     score2 = models.IntegerField(default=0, help_text="Score of 2nd team")
     started = models.BooleanField(default=False)
     finished = models.BooleanField(default=False)
+    high_point = models.FloatField(default=0, )
 
     class Meta:
         ordering = ["gamedate"]
@@ -68,6 +70,7 @@ class Prediction(models.Model):
     textname = models.CharField(max_length=50, blank=True, null=True)
     started = models.BooleanField(default=False)
     gamedate = models.DateTimeField(blank=True, null=True)
+    
 
     class Meta:
         ordering = ["gamedate"]
@@ -79,6 +82,7 @@ class Prediction(models.Model):
         # first determine if the player got the result right
         win_diff = 0.0
         bonus = 0
+        self.result = False
         if self.game.score1 > self.game.score2:
             if self.score1 > self.score2:
                 self.result = True
@@ -100,6 +104,8 @@ class Prediction(models.Model):
         mySpread = abs(self.score1 - self.score2)
         if self.result == True:
             self.points = win_diff + abs(gameSpread - mySpread) + bonus
+        else:
+            self.points = 100
         return()
         
 

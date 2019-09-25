@@ -10,7 +10,6 @@ Openwater swimmers RWC 2019 competition
 
 <div id="picks">
   <h1>My picks</h1>
-    {% if user.is_staff %} Is staff {% endif %}
     {% if user.profile.prediction_set.all %}
       <table>
         <tr>
@@ -44,9 +43,11 @@ Openwater swimmers RWC 2019 competition
   <h1>Player List</h1>
     {% if playerList %}
       <div class="list-group">
+        <ul>
       {% for player in playerList%}
-         <p><a href="{% url 'rwc19:playerDets' player.user.id %}">{{ player.user.username }}</a> - Points {{ player.totalPoints }}</p>
+         <li><a href="{% url 'rwc19:playerDets' player.user.id %}">{{ player.user.username }}</a> - Points {{ player.totalPoints }}</li>
       {% endfor %}
+    </ul>
       </div>
     {% else %}
       <p>No players yet!</p>>

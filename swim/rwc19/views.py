@@ -14,7 +14,7 @@ from django.forms import inlineformset_factory, modelformset_factory
 
 @login_required
 def index(request):
-    playerList = Profile.objects.order_by('totalPoints')
+    playerList = Profile.objects.order_by('totalPoints').filter(is_admin = "False")
     context = {'playerList': playerList}
     return render(request, 'rwc19/index.html', context)
 
@@ -43,7 +43,7 @@ def makePicks(request):
     if request.method == 'POST':
         fPicks = PickFormSet(request.POST, queryset = Prediction.objects.filter(player=usrProfile).exclude(started=True).order_by('gamedate'))
         
-        print(len(fPicks))
+        #print(len(fPicks))
         if fPicks.is_valid():
             fPicks.save()
             return HttpResponseRedirect(reverse('rwc19:index'))
@@ -67,22 +67,50 @@ def playerDets(request, player_id):
 
 def gameEdit(request, game_id):
     game = get_object_or_404(Game, id = game_id)
-    print(game)
+
+    players = Profile.objects.all().filter(is_admin = "False")
+    
+    for player in players:
+        p, created = Prediction.objects.get_or_create(player = player, game = game)
+        p.textname = "{} v {}".format(game.Team1, game.Team2)
+        p.gamedate = game.gamedate
+        if game.gamedate < timezone.make_aware(datetime.datetime.now(), timezone.get_current_timezone()):
+            p.started = True
+            game.started = True
+            p.calcScore()
+        else:
+            p.started = False
+        p.save()
+
+    PickFormSet = modelformset_factory(Prediction, fields = ('id', 'score1', 'score2'), extra=0)
+
     if request.method == 'POST':
         gForm = gameForm(request.POST, instance = game)
-        
+        fPicks = PickFormSet(request.POST, queryset = Prediction.objects.filter(game=game))
+        highPoint = 0
         if gForm.is_valid():
             gForm.save()
+            if fPicks.is_valid():
+                fPicks.save()
             pList = Prediction.objects.filter(game=game)
             for p in pList:
                 p.calcScore()
+                if p.result:
+                    if p.points > highPoint:
+                        highPoint = p.points
                 p.save()
+            game.high_point = highPoint
+            game.save()
+            for p in pList:
+                if not p.result:
+                    p.points = game.high_point
+                    p.save()
 
             players = Profile.objects.all()
-            for p in players:
-                p.totPoints()
-                p.save()
-
+            for player in players:
+                player.totPoints()
+                player.save()
+            
             return HttpResponseRedirect(reverse('rwc19:index'))
         else:
             print("invalid response, error = {}".format(fPicks.errors))
@@ -90,6 +118,6 @@ def gameEdit(request, game_id):
      # if a GET (or any other method) we'll create a blank form
     else:
         gForm = gameForm(instance = game)
-        
-    context = {'gForm': gForm, 'test': "Jim"}
+        fPicks = PickFormSet(queryset = Prediction.objects.filter(game=game))
+    context = {'gForm': gForm, 'formset': fPicks}
     return render(request, 'rwc19/gameEdit.html', context)

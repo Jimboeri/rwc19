@@ -15,7 +15,7 @@ class PickDetailForm(forms.ModelForm):
 class gameForm(forms.ModelForm):
     class Meta:
         model = Game
-        fields = ['gamedate', 'score1', 'score2', 'started', 'finished']
+        fields = ['gamedate', 'score1', 'score2', 'finished']
         #widgets = {
         #    'descr': forms.Textarea(attrs={'rows': 3}),
         #}
