@@ -8,7 +8,7 @@ import datetime
 from django.utils import timezone
 
 from .models import Profile, Prediction, Game
-from .forms import PickDetailForm
+from .forms import PickDetailForm, gameForm
 from django.forms import inlineformset_factory, modelformset_factory
 # Create your views here.
 
@@ -21,6 +21,7 @@ def index(request):
 @login_required
 def makePicks(request):
     games = Game.objects.all()
+    totPoints = 0
     for g in games:
         p, created = Prediction.objects.get_or_create(player = request.user.profile, game = g)
         p.textname = "{} v {}".format(g.Team1, g.Team2)
@@ -29,10 +30,13 @@ def makePicks(request):
             p.started = True
             g.started = True
             p.calcScore()
+            totPoints = totPoints + p.points
         else:
             p.started = False
         p.save()
     usrProfile = Profile.objects.get(user=request.user)
+    usrProfile.totalPoints = totPoints
+    usrProfile.save()
     PickFormSet = modelformset_factory(Prediction, fields = ('id', 'score1', 'score2'), extra=0)
     #fPicks = PickFormSet(queryset = Prediction.objects.filter(player=usrProfile))
 
@@ -60,3 +64,32 @@ def playerDets(request, player_id):
 
     context = {'player': player, 'picks':picks}
     return render(request, 'rwc19/playerDets.html', context)
+
+def gameEdit(request, game_id):
+    game = get_object_or_404(Game, id = game_id)
+    print(game)
+    if request.method == 'POST':
+        gForm = gameForm(request.POST, instance = game)
+        
+        if gForm.is_valid():
+            gForm.save()
+            pList = Prediction.objects.filter(game=game)
+            for p in pList:
+                p.calcScore()
+                p.save()
+
+            players = Profile.objects.all()
+            for p in players:
+                p.totPoints()
+                p.save()
+
+            return HttpResponseRedirect(reverse('rwc19:index'))
+        else:
+            print("invalid response, error = {}".format(fPicks.errors))
+            
+     # if a GET (or any other method) we'll create a blank form
+    else:
+        gForm = gameForm(instance = game)
+        
+    context = {'gForm': gForm, 'test': "Jim"}
+    return render(request, 'rwc19/gameEdit.html', context)

@@ -14,6 +14,14 @@ class Profile(models.Model):
     def __str__(self):
         return self.user.username
 
+    def totPoints(self):
+        pList = Prediction.objects.filter(player=self)
+        totScore = 0
+        for p in pList:
+            if p.game.finished:
+                totScore = totScore + p.points
+        self.totalPoints = totScore
+        return
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
@@ -70,19 +78,29 @@ class Prediction(models.Model):
     def calcScore(self):
         # first determine if the player got the result right
         win_diff = 0.0
+        bonus = 0
         if self.game.score1 > self.game.score2:
             if self.score1 > self.score2:
                 self.result = True
                 win_diff = abs(self.game.score1 - self.score1)/2
+                if self.game.score1 == self.score1:
+                    bonus = -5
         elif self.game.score1 == self.game.score2:
             if self.score1 == self.score2:
                 self.result = True
+                if self.game.score1 == self.score1:
+                    bonus = -5
         elif self.game.score1 < self.game.score2:
             if self.score1 < self.score2:
                 self.result = True
                 win_diff = abs(self.game.score2 - self.score2)/2
-        
-        self.points = win_diff
+                if self.game.score2 == self.score2:
+                    bonus = -5
+        gameSpread = abs(self.game.score1 - self.game.score2)
+        mySpread = abs(self.score1 - self.score2)
+        if self.result == True:
+            self.points = win_diff + abs(gameSpread - mySpread) + bonus
+        return()
         
 
         

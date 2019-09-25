@@ -10,6 +10,7 @@ Openwater swimmers RWC 2019 competition
 
 <div id="picks">
   <h1>My picks</h1>
+    {% if user.is_staff %} Is staff {% endif %}
     {% if user.profile.prediction_set.all %}
       <table>
         <tr>
@@ -20,7 +21,11 @@ Openwater swimmers RWC 2019 competition
         </tr>
       {% for pick in user.profile.prediction_set.all %}
         <tr>
-        <td>{{ pick.game }}</td>
+          {% if user.is_staff %}
+            <td><a href="{% url 'rwc19:gameEdit' pick.game.id %}">{{ pick.game }}</a></td>
+          {% else %}
+            <td>{{ pick.game }}</td>
+          {% endif %}
         {% if pick.game.finished %}
           <td>Finished</td><td>{{ pick.game.score1}} : {{ pick.game.score2}}</td>
         {% else %}

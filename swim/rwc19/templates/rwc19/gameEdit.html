@@ -1,0 +1,51 @@
+{% extends "rwc19/base.html" %}
+
+{% block title %}
+Game Edit
+{% endblock %}
+
+{% block web-body %}
+<div class="iot_background">
+  <div id="node-header"><h3>Update Game information</h3></div>
+    <div id="node_detail" class="content_block">
+      <div id="node_det_table">
+        <form action="{% url 'rwc19:gameEdit' gForm.instance.id %}" method="POST">
+          {% csrf_token %}
+          
+          {{ gForm.non_field_errors}}
+          {{ gForm.instance.Team1 }} v {{ gForm.instance.Team2 }}
+           <table>
+
+            <tr>
+                <td>Date</td>
+                <td>{{ gForm.gamedate }}</td>
+              </tr>
+ 
+              <tr>
+                <td>{{ gForm.instance.Team1 }} score</td>
+                <td>{{ gForm.score1 }}</td>
+              </tr>
+              <tr>
+                <td>{{ gForm.instance.Team2 }} score</td>
+                <td>{{ gForm.score2 }}</td>
+              </tr>
+              <tr>
+                <td>Started</td>
+                <td>{{ gForm.started }}</td>
+              </tr>
+              <tr>
+                <td>Finished</td>
+                <td>{{ gForm.finished }}</td>
+              </tr>
+         
+          </table>
+        <input type="submit" value="Submit">
+        <span id="node_cancel_button" class="cancel_button">
+          <a href="{% url 'rwc19:index' %}" class="btn btn-link btn-outline-warning" role="button">Cancel</a>
+        </span>
+      </form>
+    </div>
+  </div>
+ 
+</div>
+{% endblock %}
