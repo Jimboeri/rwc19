@@ -3,9 +3,9 @@ body {
   background-color: lightblue;
 }
 
- .iot_background{
+ .rwc_background{
   background-color: lightblue;
-} 
+}
 
 .lastseen {
   font-style: italic;
@@ -63,7 +63,6 @@ body {
   color: yellow
 }
 
-
 .logo {
   max-width: 15%;
   padding: 10px 10px 10px 10px;
@@ -81,6 +80,16 @@ body {
 #logged_in {
   float: right;
 }
+
+/*  -------------------------------------
+ID Selectors
+------------------------------------- */
+#mypicks td, #mypicks th {
+  border: 1px solid #ddd;
+  padding: 4px;
+}
+
+
 
 /* -------------------------------------
     HEADER, FOOTER, MAIN

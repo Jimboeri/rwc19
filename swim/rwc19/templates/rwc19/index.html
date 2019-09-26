@@ -11,12 +11,13 @@ Openwater swimmers RWC 2019 competition
 <div id="picks">
   <h1>My picks</h1>
     {% if user.profile.prediction_set.all %}
-      <table>
+      <table id="mypicks">
         <tr>
           <th>Game</th>
           <th> </th>
           <th>Result</th>
           <th>Your selection</th>
+          <th>Points</th>
         </tr>
       {% for pick in user.profile.prediction_set.all %}
         <tr>
@@ -25,13 +26,20 @@ Openwater swimmers RWC 2019 competition
           {% else %}
             <td>{{ pick.game }}</td>
           {% endif %}
-        {% if pick.game.finished %}
-          <td>Finished</td><td>{{ pick.game.score1}} : {{ pick.game.score2}}</td>
-        {% else %}
-          <td></td><td></td>
-        {% endif %}
-        <td>{{ pick.score1}} : {{ pick.score2}}</td>
-      </tr>
+          {% if pick.game.finished %}
+            <td>Finished</td><td>{{ pick.game.score1}} : {{ pick.game.score2}}</td>
+          {% else %}
+            <td></td><td></td>
+          {% endif %}
+          {% if pick.score1 != 0 or pick.score2 != 0 %}
+            <td>{{ pick.score1}} : {{ pick.score2}}</td>
+          {% else %}
+            <td>No picks entered</td>
+          {% endif %}
+          {% if pick.game.finished %}
+            <td>{{ pick.points }}</td>
+          {% endif %}
+        </tr>
       {% endfor %}
       </table>
     {% else %}
@@ -41,17 +49,18 @@ Openwater swimmers RWC 2019 competition
   <a href="{% url 'rwc19:pickUpdate' %}">Change my picks</a>
   <div id="players">
   <h1>Player List</h1>
-    {% if playerList %}
-      <div class="list-group">
-        <ul>
-      {% for player in playerList%}
-         <li><a href="{% url 'rwc19:playerDets' player.user.id %}">{{ player.user.username }}</a> - Points {{ player.totalPoints }}</li>
-      {% endfor %}
-    </ul>
-      </div>
-    {% else %}
-      <p>No players yet!</p>>
-    {% endif %}
+  <table id="mypicks">
+    <tr>
+      <th>Player</th>
+      <th>Points</th>
+    </tr>
+    
+    {% for player in playerList%}
+    <tr>
+       <td><a href="{% url 'rwc19:playerDets' player.user.id %}">{{ player.user.username }}</a></td><td>{{ player.totalPoints }}</td>
+    </tr>
+    {% endfor %}
+ 
   </div>
  
 {% endblock %}
