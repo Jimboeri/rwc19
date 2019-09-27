@@ -9,14 +9,31 @@ Player info and picks
   <div id="player-header"><h3>Player info</h3></div>
     <div id="player_detail" class="content_block">
       <div id="player_det_table">
-        {{ player.user.username}}
+        {{ player.user.username|title}}
           
-          <table>
+        <table id="mypicks">
+          <tr>
+            <th>Game</th>
+            <th>Actual score</th>
+            <th>Your selection</th>
+            <th>Points</th>
+          </tr>
           {% for pick in picks %}
             <tr>
               <td>{{ pick.textname}}</td>
-              <td>{{ pick.score1 }} :</td>
-              <td>{{ pick.score2 }}</td>
+              {% if pick.game.finished %}
+                <td>{{ pick.game.score1 }} : {{ pick.game.score2 }}</td>
+              {% else %}
+                <td></td>
+              {% endif %}
+              {% if pick.score1 != 0 or pick.score2 != 0 %}
+                <td>{{ pick.score1}} : {{ pick.score2}}</td>
+              {% else %}
+                <td>No picks entered</td>
+              {% endif %}
+              {% if pick.game.finished %}
+              <td>{{ pick.points }}</td>
+              {% endif %}
             </tr>
             {% endfor %}
           </table>

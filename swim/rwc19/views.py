@@ -37,7 +37,7 @@ def makePicks(request):
     usrProfile = Profile.objects.get(user=request.user)
     usrProfile.totalPoints = totPoints
     usrProfile.save()
-    PickFormSet = modelformset_factory(Prediction, fields = ('id', 'score1', 'score2'), extra=0)
+    PickFormSet = modelformset_factory(Prediction, form=PickDetailForm, extra=0)
     #fPicks = PickFormSet(queryset = Prediction.objects.filter(player=usrProfile))
 
     if request.method == 'POST':
@@ -82,7 +82,7 @@ def gameEdit(request, game_id):
             p.started = False
         p.save()
 
-    PickFormSet = modelformset_factory(Prediction, fields = ('id', 'score1', 'score2'), extra=0)
+    PickFormSet = modelformset_factory(Prediction, form=PickDetailForm, extra=0)
 
     if request.method == 'POST':
         gForm = gameForm(request.POST, instance = game)

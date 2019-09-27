@@ -9,7 +9,7 @@ Openwater swimmers RWC 2019 competition
 {% block web-body %}
 
 <div id="picks">
-  <h1>My picks</h1>
+  <h1 class="jw_mob">My picks</h1>
     {% if user.profile.prediction_set.all %}
       <table id="mypicks">
         <tr>
@@ -48,7 +48,9 @@ Openwater swimmers RWC 2019 competition
   </div>
   <a href="{% url 'rwc19:pickUpdate' %}">Change my picks</a>
   <div id="players">
-  <h1>Player List</h1>
+  <p>
+  </p>
+  <h1 class="jw_mob">Player List</h1>
   <table id="mypicks">
     <tr>
       <th>Player</th>
@@ -57,7 +59,7 @@ Openwater swimmers RWC 2019 competition
     
     {% for player in playerList%}
     <tr>
-       <td><a href="{% url 'rwc19:playerDets' player.user.id %}">{{ player.user.username }}</a></td><td>{{ player.totalPoints }}</td>
+       <td><a href="{% url 'rwc19:playerDets' player.user.id %}">{{ player.user.username|title }}</a></td><td>{{ player.totalPoints }}</td>
     </tr>
     {% endfor %}
  

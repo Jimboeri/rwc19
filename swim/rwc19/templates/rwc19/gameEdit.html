@@ -39,7 +39,7 @@ Game Edit
           <table>
             {% for form in formset %}
               <tr>
-                <td>{{form.instance.player.user.username}}</td>
+                <td>{{form.instance.player.user.username|title}}</td>
                 <td>{{ form.score1 }}</td>
                 <td>{{ form.score2 }}</td>
                 <td>{{ form.id }}</td>
