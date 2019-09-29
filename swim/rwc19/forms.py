@@ -16,7 +16,7 @@ class PickDetailForm(forms.ModelForm):
 class gameForm(forms.ModelForm):
     class Meta:
         model = Game
-        fields = ['gamedate', 'score1', 'score2', 'finished']
+        fields = ['score1', 'score2', 'finished']
         widgets = {
             'score1': forms.TextInput(attrs={'size': 3}),
             'score2': forms.TextInput(attrs={'size': 3}),
