@@ -1,0 +1,50 @@
+{% extends "rwc19/base.html" %}
+
+{% block title %}
+Openwater swimmers RWC 2019 competition
+{% endblock %}
+
+{% block web-body %}
+<h1>Rules</h1>
+<ol>
+    <li>You must be an openwater swimmer on Auckland North shore, or be associated with one. 
+        Basically if you know Jo, Alton, Jim, Geoff or Helen you are in.</li>
+    <li>The game is based on 11 matches: All Black pool games (4); all quarter finals (4), semi-finals (2) and final. 
+            The aim of the game is to finish with the lowest total points score.</li>
+    <li>$10 to enter the competition</li>
+    <li>Predicted scores must be provided in person, via the Open Water swimming social WhatsApp group or Jim’s new website. 
+        Entries must be received a minimum of 15 minutes before kick-off.</li>
+    <li>People who have paid (or pledged their $10), but forget to post their predicted score, or choose not to post a predicted score, 
+        will be assigned the average points scored by other competitors.</li>
+
+</ol>
+<h1>Scoring</h1>
+    <ol>
+        <li>You must get the basic result right, pick the right winner, or choose a draw. 
+            If you don't get this right you get the worst score from those who did get it right</li>
+        <li>Then the difference between your winners score and the actual winners score is calculated & divided by 2</li>
+        <li>Then we that actual spread (diff between the winner & loser) and your spread, take the difference and add it</li>
+        <li>If you picked the exact score of the winner you get 5 points removed</li>
+    </ol>
+
+    <h1>Prizes</h1>
+    <ul>
+        <li>A coffee and a muffin (or equivalent) will be awarded to the winner of every round.</li>
+        <li>The remainder of the cash will accumulate until after the final, when a first, second, third and consolation prize is awarded, 
+            for the players with the lowest, second-lowest, third-lowest and highest points scores.</li>
+    </ul>
+
+    <h1>Judging</h1>
+<ul>
+<li>Meegan ‘the accountant’ Brewer has reviewed the points calculations. 
+    Jim ‘don’t call me honey’ West and Jo ‘Frau’ Hammer are administrators, and nominally the judges, and their decision is final. 
+    Recourse to legal and mediation services will be limited because the billable minutes will erode all gains.</li>
+<li>The winner of each round is the person who first gets the actual result correct, 
+    then whose estimated score is closest to that of the winning team, in combination with the points difference (or spread). 
+    Getting close to the winning score is twice as important as getting close to the points difference. </li>
+</ul>
+    <span id="node_cancel_button" class="cancel_button">
+        <a href="{% url 'rwc19:index' %}" class="btn btn-link btn-outline-warning" role="button">Home</a>
+    </span>
+ 
+{% endblock %}

@@ -58,6 +58,7 @@ def makePicks(request):
     context = {'formset': fPicks}
     return render(request, 'rwc19/pickUpdate.html', context)
 
+@login_required
 def playerDets(request, player_id):
     player = get_object_or_404(Profile, user = player_id)
     picks = player.prediction_set.all().order_by('gamedate')
@@ -65,6 +66,7 @@ def playerDets(request, player_id):
     context = {'player': player, 'picks':picks}
     return render(request, 'rwc19/playerDets.html', context)
 
+@login_required
 def gameEdit(request, game_id):
     game = get_object_or_404(Game, id = game_id)
 
@@ -121,3 +123,18 @@ def gameEdit(request, game_id):
         fPicks = PickFormSet(queryset = Prediction.objects.filter(game=game))
     context = {'gForm': gForm, 'formset': fPicks}
     return render(request, 'rwc19/gameEdit.html', context)
+
+@login_required
+def gameView(request, game_id):
+    game = get_object_or_404(Game, id = game_id)
+
+    picks = Prediction.objects.all().filter(game = game)
+    print(len(picks))
+    context = {'picks': picks, 'game': game}
+    return render(request, 'rwc19/gameView.html', context)
+
+@login_required
+def about(request):
+
+    #context = {'picks': picks, 'game': game}
+    return render(request, 'rwc19/about.html')
