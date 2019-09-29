@@ -10,7 +10,6 @@ urlpatterns = [
     path('pickupdate/', views.makePicks, name='pickUpdate'),
     path('player/<int:player_id>/', views.playerDets, name='playerDets'),
     path('game/edit/<int:game_id>/', views.gameEdit, name='gameEdit'),
-    #path('gateway/<int:gateway_ref>/', views.gatewayDetail, name='gatewayDetail'),
-    #path('node/update/<int:node_ref>/', views.nodeUpdate, name='nodeUpdate'),
-    #path('node/modupdate/<int:node_ref>/', views.nodeModNotify, name='nodeModNotify'),
+    path('game/view/<int:game_id>/', views.gameView, name='gameView'),
+    path('about/', views.about, name='about'),
 ]
