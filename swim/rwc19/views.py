@@ -8,7 +8,7 @@ import datetime
 from django.utils import timezone
 
 from .models import Profile, Prediction, Game
-from .forms import PickDetailForm, gameForm
+from .forms import PickDetailForm, gameForm, PickAdminDetailForm
 from django.forms import inlineformset_factory, modelformset_factory
 # Create your views here.
 
@@ -84,7 +84,7 @@ def gameEdit(request, game_id):
             p.started = False
         p.save()
 
-    PickFormSet = modelformset_factory(Prediction, form=PickDetailForm, extra=0)
+    PickFormSet = modelformset_factory(Prediction, form=PickAdminDetailForm, extra=0)
 
     if request.method == 'POST':
         gForm = gameForm(request.POST, instance = game)
