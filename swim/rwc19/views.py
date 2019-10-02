@@ -70,7 +70,7 @@ def playerDets(request, player_id):
 def gameEdit(request, game_id):
     game = get_object_or_404(Game, id = game_id)
 
-    players = Profile.objects.all().filter(is_admin = "False").order_by('user__username')
+    players = Profile.objects.all().filter(is_admin = "False")
     
     for player in players:
         p, created = Prediction.objects.get_or_create(player = player, game = game)
@@ -88,7 +88,7 @@ def gameEdit(request, game_id):
 
     if request.method == 'POST':
         gForm = gameForm(request.POST, instance = game)
-        fPicks = PickFormSet(request.POST, queryset = Prediction.objects.filter(game=game))
+        fPicks = PickFormSet(request.POST, queryset = Prediction.objects.filter(game=game).order_by('player__user__username'))
         highPoint = 0
         if gForm.is_valid():
             gForm.save()
@@ -120,7 +120,7 @@ def gameEdit(request, game_id):
      # if a GET (or any other method) we'll create a blank form
     else:
         gForm = gameForm(instance = game)
-        fPicks = PickFormSet(queryset = Prediction.objects.filter(game=game))
+        fPicks = PickFormSet(queryset = Prediction.objects.filter(game=game).order_by('player__user__username'))
     context = {'gForm': gForm, 'formset': fPicks}
     return render(request, 'rwc19/gameEdit.html', context)
 
