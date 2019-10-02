@@ -82,6 +82,18 @@ body {
   font-weight: bold;
 }
 
+table.formtable{
+  text-align: center;
+}
+
+th.formtable{
+  text-align: center;
+}
+
+td.formtable{
+  text-align: center;
+}
+
 /*  -------------------------------------
 ID Selectors
 ------------------------------------- */

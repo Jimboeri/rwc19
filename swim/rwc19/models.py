@@ -70,6 +70,7 @@ class Prediction(models.Model):
     textname = models.CharField(max_length=50, blank=True, null=True)
     started = models.BooleanField(default=False)
     gamedate = models.DateTimeField(blank=True, null=True)
+    override = models.BooleanField(default=False)
     
 
     class Meta:
@@ -102,10 +103,11 @@ class Prediction(models.Model):
                     bonus = -5
         gameSpread = abs(self.game.score1 - self.game.score2)
         mySpread = abs(self.score1 - self.score2)
-        if self.result == True:
-            self.points = win_diff + abs(gameSpread - mySpread) + bonus
-        else:
-            self.points = 100
+        if not self.override:
+            if self.result == True:
+                self.points = win_diff + abs(gameSpread - mySpread) + bonus
+            else:
+                self.points = 100
         return()
         
 

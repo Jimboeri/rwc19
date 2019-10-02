@@ -90,21 +90,27 @@ def gameEdit(request, game_id):
         gForm = gameForm(request.POST, instance = game)
         fPicks = PickFormSet(request.POST, queryset = Prediction.objects.filter(game=game).order_by('player__user__username'))
         highPoint = 0
+        print("BP1")
         if gForm.is_valid():
+            print("BP2")
             gForm.save()
             if fPicks.is_valid():
+                print("Valid picks")
                 fPicks.save()
+            else:
+                print(fPicks.errors)
             pList = Prediction.objects.filter(game=game)
             for p in pList:
-                p.calcScore()
-                if p.result:
-                    if p.points > highPoint:
-                        highPoint = p.points
+                if not p.override:
+                    p.calcScore()
+                    if p.result:
+                        if p.points > highPoint:
+                            highPoint = p.points
                 p.save()
             game.high_point = highPoint
             game.save()
             for p in pList:
-                if not p.result:
+                if not p.result and not p.override:
                     p.points = game.high_point
                     p.save()
 

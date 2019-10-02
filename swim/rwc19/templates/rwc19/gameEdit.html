@@ -36,12 +36,25 @@ Game Edit
          
           </table>
           <h2>Update player picks</h2>
-          <table>
+          <table class='formtable'>
+            <tr class='formtable'>
+              <th></th>
+              <th class='formtable'>{{ gForm.instance.Team1 }} </th>
+              <th class='formtable'>{{ gForm.instance.Team2 }} </th>
+              {% if gForm.instance.finished %}
+                <th class='formtable'>Over ride</th>
+                <th class='formtable'>Points</th>
+              {% endif %}
+            </tr>
             {% for form in formset %}
               <tr>
-                <td>{{form.instance.player.user.username|title}}</td>
-                <td>{{ form.score1 }}</td>
-                <td>{{ form.score2 }}</td>
+                <td class='formtable'>{{form.instance.player.user.username|title}}</td>
+                <td class='formtable'>{{ form.score1 }}</td>
+                <td class='formtable'>{{ form.score2 }}</td>
+                {% if gForm.instance.finished %}
+                  <td class='formtable'>{{ form.override }}</td>
+                  <td class='formtable'>{{ form.points }}</td>
+                {% endif %}
                 <td>{{ form.id }}</td>
               </tr>
               {% endfor %}
