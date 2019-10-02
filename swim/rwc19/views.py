@@ -26,7 +26,7 @@ def makePicks(request):
         p, created = Prediction.objects.get_or_create(player = request.user.profile, game = g)
         p.textname = "{} v {}".format(g.Team1, g.Team2)
         p.gamedate = g.gamedate
-        if g.gamedate < timezone.make_aware(datetime.datetime.now(), timezone.get_current_timezone()):
+        if g.gamedate < timezone.make_aware(datetime.datetime.now(), timezone.get_current_timezone()) + datetime.timedelta(minutes=15):
             p.started = True
             g.started = True
             p.calcScore()
