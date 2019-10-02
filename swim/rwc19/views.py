@@ -70,7 +70,7 @@ def playerDets(request, player_id):
 def gameEdit(request, game_id):
     game = get_object_or_404(Game, id = game_id)
 
-    players = Profile.objects.all().filter(is_admin = "False")
+    players = Profile.objects.all().filter(is_admin = "False").order_by('user__username')
     
     for player in players:
         p, created = Prediction.objects.get_or_create(player = player, game = game)
@@ -128,7 +128,8 @@ def gameEdit(request, game_id):
 def gameView(request, game_id):
     game = get_object_or_404(Game, id = game_id)
 
-    picks = Prediction.objects.all().filter(game = game)
+    picks = Prediction.objects.all().filter(game = game).order_by('player__user__username')
+
     print(len(picks))
     context = {'picks': picks, 'game': game}
     return render(request, 'rwc19/gameView.html', context)
