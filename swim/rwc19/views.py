@@ -134,7 +134,7 @@ def gameEdit(request, game_id):
 def gameView(request, game_id):
     game = get_object_or_404(Game, id = game_id)
 
-    picks = Prediction.objects.all().filter(game = game).order_by('player__user__username')
+    picks = Prediction.objects.all().filter(game = game).order_by('points')
 
     print(len(picks))
     context = {'picks': picks, 'game': game}
