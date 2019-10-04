@@ -88,7 +88,7 @@ def gameEdit(request, game_id):
 
     if request.method == 'POST':
         gForm = gameForm(request.POST, instance = game)
-        fPicks = PickFormSet(request.POST, queryset = Prediction.objects.filter(game=game).order_by('player__user__username'))
+        fPicks = PickFormSet(request.POST, queryset = Prediction.objects.filter(game=game).order_by('score1', 'player__user__username'))
         highPoint = 0
         print("BP1")
         if gForm.is_valid():
@@ -126,7 +126,7 @@ def gameEdit(request, game_id):
      # if a GET (or any other method) we'll create a blank form
     else:
         gForm = gameForm(instance = game)
-        fPicks = PickFormSet(queryset = Prediction.objects.filter(game=game).order_by('player__user__username'))
+        fPicks = PickFormSet(queryset = Prediction.objects.filter(game=game).order_by('score1', 'player__user__username'))
     context = {'gForm': gForm, 'formset': fPicks}
     return render(request, 'rwc19/gameEdit.html', context)
 
