@@ -84,30 +84,31 @@ class Prediction(models.Model):
         win_diff = 0.0
         bonus = 0
         self.result = False
-        if self.game.score1 > self.game.score2:
-            if self.score1 > self.score2:
-                self.result = True
-                win_diff = abs(self.game.score1 - self.score1)/2
-                if self.game.score1 == self.score1:
-                    bonus = -5
-        elif self.game.score1 == self.game.score2:
-            if self.score1 == self.score2:
-                self.result = True
-                if self.game.score1 == self.score1:
-                    bonus = -5
-        elif self.game.score1 < self.game.score2:
-            if self.score1 < self.score2:
-                self.result = True
-                win_diff = abs(self.game.score2 - self.score2)/2
-                if self.game.score2 == self.score2:
-                    bonus = -5
-        gameSpread = abs(self.game.score1 - self.game.score2)
-        mySpread = abs(self.score1 - self.score2)
-        if not self.override:
-            if self.result == True:
-                self.points = win_diff + abs(gameSpread - mySpread) + bonus
-            else:
-                self.points = 100
+        if self.game.finished:
+            if self.game.score1 > self.game.score2:
+                if self.score1 > self.score2:
+                    self.result = True
+                    win_diff = abs(self.game.score1 - self.score1)/2
+                    if self.game.score1 == self.score1:
+                        bonus = -5
+            elif self.game.score1 == self.game.score2:
+                if self.score1 == self.score2:
+                    self.result = True
+                    if self.game.score1 == self.score1:
+                        bonus = -5
+            elif self.game.score1 < self.game.score2:
+                if self.score1 < self.score2:
+                    self.result = True
+                    win_diff = abs(self.game.score2 - self.score2)/2
+                    if self.game.score2 == self.score2:
+                        bonus = -5
+            gameSpread = abs(self.game.score1 - self.game.score2)
+            mySpread = abs(self.score1 - self.score2)
+            if not self.override:
+                if self.result == True:
+                    self.points = win_diff + abs(gameSpread - mySpread) + bonus
+                else:
+                    self.points = 100
         return()
         
 

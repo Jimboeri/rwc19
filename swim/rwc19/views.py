@@ -79,7 +79,7 @@ def gameEdit(request, game_id):
         if game.gamedate < timezone.make_aware(datetime.datetime.now(), timezone.get_current_timezone()):
             p.started = True
             game.started = True
-            p.calcScore()
+            #p.calcScore()
         else:
             p.started = False
         p.save()
