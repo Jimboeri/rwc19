@@ -134,8 +134,10 @@ def gameEdit(request, game_id):
 def gameView(request, game_id):
     game = get_object_or_404(Game, id = game_id)
 
-    picks = Prediction.objects.all().filter(game = game).order_by('points')
-
+    if game.finished:
+        picks = Prediction.objects.all().filter(game = game).order_by('points')
+    else:
+        picks = Prediction.objects.all().filter(game = game).order_by('player__user__username')
     print(len(picks))
     context = {'picks': picks, 'game': game}
     return render(request, 'rwc19/gameView.html', context)
