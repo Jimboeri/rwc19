@@ -45,7 +45,9 @@ Openwater swimmers RWC 2019 competition
       No Predictions
     {% endif %}
   </div>
-  <a href="{% url 'rwc19:pickUpdate' %}">Change my picks</a>
+  <span id="pick_update_button" class="warning_button">
+    <a href="{% url 'rwc19:pickUpdate' %}" class="btn btn-link btn-warning" role="button">Change my picks</a>
+  </span>
   <div id="players">
   <p>
   </p>

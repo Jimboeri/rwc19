@@ -111,5 +111,3 @@ class Prediction(models.Model):
                     self.points = 100
         return()
         
-
-        
