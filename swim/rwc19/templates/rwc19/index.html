@@ -36,7 +36,7 @@ Openwater swimmers RWC 2019 competition
             <td>No picks entered</td>
           {% endif %}
           {% if pick.game.finished %}
-            <td>{{ pick.points }}</td>
+            <td>{{ pick.points|floatformat }}</td>
           {% endif %}
         </tr>
       {% endfor %}
@@ -60,7 +60,8 @@ Openwater swimmers RWC 2019 competition
     
     {% for player in playerList%}
     <tr>
-       <td><a href="{% url 'rwc19:playerDets' player.user.id %}">{{ player.user.username|title }}</a></td><td>{{ player.totalPoints }}</td>
+       <td><a href="{% url 'rwc19:playerDets' player.user.id %}">{{ player.user.username|title }}</a></td>
+       <td>{{ player.totalPoints|floatformat }}</td>
     </tr>
     {% endfor %}
  
