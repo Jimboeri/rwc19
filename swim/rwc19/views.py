@@ -90,7 +90,9 @@ def gameEdit(request, game_id):
         gForm = gameForm(request.POST, instance = game)
         fPicks = PickFormSet(request.POST, queryset = Prediction.objects.filter(game=game).order_by('score1', 'player__user__username'))
         highPoint = 0
-        print("BP1")
+        pTot = 0.0
+        pNum = 0
+        #print("BP1")
         if gForm.is_valid():
             print("BP2")
             gForm.save()
@@ -100,18 +102,26 @@ def gameEdit(request, game_id):
             else:
                 print(fPicks.errors)
             pList = Prediction.objects.filter(game=game)
+
             for p in pList:
                 if not p.override:
                     p.calcScore()
                     if p.result:
                         if p.points > highPoint:
                             highPoint = p.points
+                        pTot = pTot + p.points
+                        pNum = pNum + 1
                 p.save()
             game.high_point = highPoint
+            game.average = pTot / pNum
             game.save()
             for p in pList:
-                if not p.result and not p.override:
-                    p.points = game.high_point
+                if not p.result:
+                    if not p.override:
+                        p.points = game.high_point
+                        if ((p.score1 == 0) and (p.score2 == 0)):     # player defaulted
+                            print("Default found ")
+                            p.points = game.average
                     p.save()
 
             players = Profile.objects.all()

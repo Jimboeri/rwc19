@@ -53,6 +53,7 @@ class Game(models.Model):
     started = models.BooleanField(default=False)
     finished = models.BooleanField(default=False)
     high_point = models.FloatField(default=0, )
+    average = models.DecimalField(default=0, max_digits=5, decimal_places=1)
 
     class Meta:
         ordering = ["gamedate"]
