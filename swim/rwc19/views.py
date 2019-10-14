@@ -112,8 +112,9 @@ def gameEdit(request, game_id):
                         pTot = pTot + p.points
                         pNum = pNum + 1
                 p.save()
-            game.high_point = highPoint
-            game.average = pTot / pNum
+            if game.finished:
+                game.high_point = highPoint
+                game.average = pTot / pNum
             game.save()
             for p in pList:
                 if not p.result:
