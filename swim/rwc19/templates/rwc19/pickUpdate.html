@@ -19,6 +19,12 @@ Your picks
               <td>{{form.instance.textname}}</td>
               <td>{{ form.score1 }}</td>
               <td>{{ form.score2 }}</td>
+              {% if form.score1.errors %}
+                <td>{{ form.score1.errors }}</td>
+              {% endif %}
+              {% if form.score2.errors %}
+                <td>{{ form.score2.errors }}</td>
+              {% endif %}
               <td>{{ form.id }}</td>
             </tr>
             {% endfor %}
