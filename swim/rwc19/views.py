@@ -94,17 +94,17 @@ def gameEdit(request, game_id):
         pNum = 0
         #print("BP1")
         if gForm.is_valid():
-            print("BP2")
+            #print("BP2")
             gForm.save()
             if fPicks.is_valid():
-                print("Valid picks")
+                #print("Valid picks")
                 fPicks.save()
             else:
                 print(fPicks.errors)
             pList = Prediction.objects.filter(game=game)
 
             if game.finished:
-                print("Picks pass 1")
+                #print("Picks pass 1")
                 for p in pList:             # first pass works out scores for those with the right result
                     if not p.override:
                         p.calcScore()
@@ -112,7 +112,7 @@ def gameEdit(request, game_id):
                         if p.result:
                             if p.points > highPoint:
                                 highPoint = p.points
-                print("Picks pass 2")
+                #print("Picks pass 2")
                 for p in pList:             # second pass gives worst winning result to losers
                     if not p.result:
                         if not p.override:
@@ -124,14 +124,14 @@ def gameEdit(request, game_id):
                         pTot = pTot + p.points
                         pNum = pNum + 1
                     
-                print("Total is {} and number counted is {}".format(pTot, pNum))
+                #print("Total is {} and number counted is {}".format(pTot, pNum))
                 game.high_point = highPoint
                 game.average = pTot / pNum
                 game.save()
             for p in pList:             # third pass - apply average to defaulters
                 if not p.override:
                     if p.noPicks:     # player defaulted
-                        print("Default found ")
+                        #print("Default found ")
                         p.points = game.average
                         p.save()
 

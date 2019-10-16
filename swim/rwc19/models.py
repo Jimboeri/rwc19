@@ -116,7 +116,7 @@ class Prediction(models.Model):
 
             if ((self.score1 == 0) and (self.score2 == 0)):
                 self.noPicks = True
-                print("No picker found")
+                #print("No picker found")
             else:
                 self.noPicks = False
         return()
