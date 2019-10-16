@@ -103,27 +103,37 @@ def gameEdit(request, game_id):
                 print(fPicks.errors)
             pList = Prediction.objects.filter(game=game)
 
-            for p in pList:
-                if not p.override:
-                    p.calcScore()
-                    if p.result:
-                        if p.points > highPoint:
-                            highPoint = p.points
+            if game.finished:
+                print("Picks pass 1")
+                for p in pList:             # first pass works out scores for those with the right result
+                    if not p.override:
+                        p.calcScore()
+                        p.save()
+                        if p.result:
+                            if p.points > highPoint:
+                                highPoint = p.points
+                print("Picks pass 2")
+                for p in pList:             # second pass gives worst winning result to losers
+                    if not p.result:
+                        if not p.override:
+                            p.points = game.high_point
+                            p.save()
+
+                    if not p.noPicks:     # player defaulted
+                        print("pTot is {}".format(pTot))
                         pTot = pTot + p.points
                         pNum = pNum + 1
-                p.save()
-            if game.finished:
+                    
+                print("Total is {} and number counted is {}".format(pTot, pNum))
                 game.high_point = highPoint
                 game.average = pTot / pNum
-            game.save()
-            for p in pList:
-                if not p.result:
-                    if not p.override:
-                        p.points = game.high_point
-                        if ((p.score1 == 0) and (p.score2 == 0)):     # player defaulted
-                            print("Default found ")
-                            p.points = game.average
-                    p.save()
+                game.save()
+            for p in pList:             # third pass - apply average to defaulters
+                if not p.override:
+                    if p.noPicks:     # player defaulted
+                        print("Default found ")
+                        p.points = game.average
+                        p.save()
 
             players = Profile.objects.all()
             for player in players:

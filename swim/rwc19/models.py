@@ -73,6 +73,7 @@ class Prediction(models.Model):
     started = models.BooleanField(default=False)
     gamedate = models.DateTimeField(blank=True, null=True)
     override = models.BooleanField(default=False)
+    noPicks = models.BooleanField(default=False)
     
 
     class Meta:
@@ -106,10 +107,17 @@ class Prediction(models.Model):
                         bonus = -5
             gameSpread = abs(self.game.score1 - self.game.score2)
             mySpread = abs(self.score1 - self.score2)
+
             if not self.override:
                 if self.result == True:
                     self.points = win_diff + abs(gameSpread - mySpread) + bonus
                 else:
-                    self.points = 100
+                    self.points = self.game.average
+
+            if ((self.score1 == 0) and (self.score2 == 0)):
+                self.noPicks = True
+                print("No picker found")
+            else:
+                self.noPicks = False
         return()
         
