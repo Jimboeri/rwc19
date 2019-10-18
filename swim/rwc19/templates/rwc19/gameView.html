@@ -9,10 +9,15 @@ Game Info
   <div id="node-header"><h3>Game information</h3></div>
     <div id="node_detail" class="content_block">
       <div id="node_det_table">
-            {% if user.is_staff %}
-        <span id="node_cancel_button" class="cancel_button">
-          <a href="{% url 'rwc19:gameEdit' game.id %}" class="btn btn-link btn-outline-warning" role="button">Edit player picks</a>
-        </span>
+        {% if user.is_staff %}
+          <span id="node_cancel_button" class="cancel_button">
+            <a href="{% url 'rwc19:gameEdit' game.id %}" class="btn btn-link btn-outline-warning" role="button">Edit player picks</a>
+          </span>
+        {% endif %}
+        {% if user.username == 'jim' %}
+          <span id="node_cancel_button" class="cancel_button">
+            <a href="{% url 'rwc19:email_results' game.id %}" class="btn btn-link btn-outline-warning" role="button">Email results</a>
+          </span>
         {% endif %}
         <table>
             <tr>

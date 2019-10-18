@@ -1,0 +1,18 @@
+{% extends "rwc19/email-base.html" %}
+
+{% block title %}
+RWC Picks results
+{% endblock %}
+
+{% block email-body %}
+  <p>Hi {{ user.username|capfirst }}</p>
+
+  <p>Here are the results for the <span class="nodename">{{game.Team1}} v {{game.Team1}}</span> game.
+  
+  <table class = "node-details">
+    <tr>
+      <td class = "node-details">Player:</td><td class = "node-details">{{ node.nodeID }}</td>
+    </tr>
+  </table>
+
+{% endblock %}

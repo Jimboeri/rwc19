@@ -7,6 +7,10 @@ from django.urls import reverse
 import datetime
 from django.utils import timezone
 
+import smtplib
+from email.mime.text import MIMEText
+import os
+
 from .models import Profile, Prediction, Game
 from .forms import PickDetailForm, gameForm, PickAdminDetailForm
 from django.forms import inlineformset_factory, modelformset_factory
@@ -168,3 +172,39 @@ def about(request):
 
     #context = {'picks': picks, 'game': game}
     return render(request, 'rwc19/about.html')
+
+
+@login_required
+def email_results(request, game_id):
+    game = get_object_or_404(Game, id = game_id)
+    if game.finished:
+        print("Sending email, game is finished")
+        picks = Prediction.objects.all().filter(game = game).order_by('points')
+        winner = picks[0]
+        print("Winner is {}".format(winner.player.user.username))
+
+        eSmtp_host = os.getenv("AKLC_SMTP_HOST", "smtp.gmail.com")
+        eSmtp_port = os.getenv("AKLC_SMTP_PORT", "465")
+        eSmtp_user = os.getenv("AKLC_SMTP_USER", "aklciot@gmail.com")
+        eSmtp_password = os.getenv("AKLC_SMTP_PASSWORD", "")
+
+        try:
+
+            print(eSmtp_host)
+            print(int(eSmtp_port))
+            email_server = smtplib.SMTP_SSL(eSmtp_host, int(eSmtp_port))
+            email_server.login(eSmtp_user, eSmtp_password)
+
+            #msg = MIMEText(jPayload['Body'], 'html')
+            #msg['From'] = jPayload['From']
+            #msg['To'] = jPayload['To']
+            #msg['Subject'] = jPayload['Subject']
+
+            #email_server.sendmail(jPayload['From'], jPayload['To'], msg.as_string())
+            #email_server.close()
+            #print("email sent")
+        except Exception as e:
+            print(e)
+            print("Houston, we have an email error {}".format(e))
+
+    return render(request, 'rwc19/index.html')
