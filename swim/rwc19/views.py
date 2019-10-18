@@ -34,7 +34,7 @@ def makePicks(request):
             p.started = True
             g.started = True
             p.calcScore()
-            totPoints = totPoints + p.points
+            totPoints = totPoints + float(p.points)
         else:
             p.started = False
         p.save()
