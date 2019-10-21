@@ -86,17 +86,26 @@ table.formtable{
   text-align: center;
 }
 
-th.formtable{
+th.formtable {
   text-align: center;
 }
 
-td.formtable{
+td.formtable {
   text-align: center;
 }
 
-a.pointsLink:link{
+a.pointsLink {
   color: yellow;
 }
+
+a.pointsLink:hover {
+  color: yellow;
+}
+
+a.pointsLinkDark {
+  color: blue;
+}
+
 
 /*  -------------------------------------
 ID Selectors

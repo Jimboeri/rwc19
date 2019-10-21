@@ -36,7 +36,7 @@ Openwater swimmers RWC 2019 competition
             <td>No picks entered</td>
           {% endif %}
           {% if pick.game.finished %}
-            <td><a href="{% url 'rwc19:pointsView' pick.id %}" class="pointsLink">{{ pick.points|floatformat }}</a></td>
+            <td><a href="{% url 'rwc19:pointsView' pick.id %}" class="pointsLinkDark">{{ pick.points|floatformat }}</a></td>
           {% endif %}
         </tr>
       {% endfor %}
