@@ -1,0 +1,105 @@
+{% extends "rwc19/base.html" %}
+
+{% block title %}
+Game Info
+{% endblock %}
+
+{% block web-body %}
+<div class="rwc_background">
+  <div id="node-header"><h3>Points information</h3></div>
+    <div id="node_detail" class="content_block">
+      <div id="node_det_table">
+        <table>
+          <tr>
+            <td>Player</td>
+            <td>{{ pick.player.user.username|title }}</td>
+          </tr>
+
+          <tr>
+            <td>Date</td>
+            <td>{{ pick.game.gamedate }}</td>
+          </tr>
+          <tr>
+            <td>Teams</td>
+            <td>{{ pick.game.Team1 }} v {{ pick.game.Team2 }}</td>
+          </tr>
+          <tr>
+            {% if pick.game.finished %}
+              <td>Game has finished</td>
+            {% else %}
+              <td></td>
+            {% endif %}
+          </tr>
+        </table>
+        <table id="mypicks">
+          <tr>
+            <th>Game</th>
+            <th>{{ pick.player.user.username|title }}</th>
+          </tr>
+
+          <tr>
+            <td>{{ pick.game.Team1 }} {{ pick.game.score1 }}:{{ pick.game.score2 }} {{ pick.game.Team2 }}</td>
+            <td>{{ pick.game.Team1 }} {{ pick.score1 }}:{{ pick.score2 }} {{ pick.game.Team2 }}</td>
+          </tr>
+
+          <tr>
+            <td>{{ game_res }}</td>
+            <td>{{ player_choice }}</td>
+            {% if pick.result %}
+              <td>Points calcluated below</td>
+            {% else %}
+              {% if pick.noPicks %}
+                <td>No picks entered, gets game average</td>
+              {% else %}
+                <td>Wrong result, gets worst of scores from players who got it right</td>
+              {% endif %}
+            {% endif %}
+          </tr>
+
+          <tr>
+              <td>Game spread: {{ gameSpread }}</td>
+              <td>Player spread: {{ mySpread }}</td>
+            </tr>
+                         
+        </table>
+        <h2>Points calculation</h2>
+          
+
+              <table  id="mypicks">
+              {% if pick.result %}
+                <tr>
+                  <td>Half the difference to the winners score:</td>
+                  <td>{{ win_diff }}</td>
+                </tr>
+                <tr>
+                  <td>Spread differential:</td>
+                  <td>{{ spread }}</td>
+                </tr>
+                <tr>
+                  <td>Bonus for getting the winning teams score:</td>
+                  <td>{{ nBonus }}</td>
+                </tr>
+                {% else %}
+                  {% if pick.noPicks %}
+                    <tr>
+                      <td>No selection, gets game average:</td>
+                      <td>{{ pick.game.average }}</td>
+                    </tr>
+                  {% else %}
+                  <tr>
+                      <td>Wrong result, gets worst score of correct picks:</td>
+                      <td>{{ pick.game.high_point }}</td>
+                    </tr>
+                  {% endif %}
+                {% endif %}
+            
+
+          </table>
+        <span id="node_cancel_button" class="cancel_button">
+          <a href="{% url 'rwc19:index' %}" class="btn btn-link btn-outline-warning" role="button">Home</a>
+        </span>
+    </div>
+  </div>
+ 
+</div>
+{% endblock %}

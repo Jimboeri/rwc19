@@ -208,3 +208,42 @@ def email_results(request, game_id):
             print("Houston, we have an email error {}".format(e))
 
     return render(request, 'rwc19/index.html')
+
+@login_required
+def pointsView(request, pick_id):
+    pick = get_object_or_404(Prediction, id = pick_id)
+    nBonus = 0
+    win_diff = 0.0
+    if pick.game.score1 > pick.game.score2:
+        game_res = "{} won".format(pick.game.Team1)
+        if pick.result:
+            if pick.score1 == pick.game.score1:
+                nBonus = -5
+            win_diff = abs(pick.game.score1 - pick.score1)/2
+    elif pick.game.score1 < pick.game.score2:
+        game_res = "{} won".format(pick.game.Team2)
+        if pick.result: 
+            if pick.score2 == pick.game.score2:
+                nBonus = -5
+            win_diff = abs(pick.game.score2 - pick.score2)/2
+    else:
+        if pick.noPicks:
+            game_res = "No selection made"
+        else:
+            game_res = "Draw"
+
+    if pick.score1 > pick.score2:
+        player_choice = "{} won".format(pick.game.Team1)
+    elif pick.score1 < pick.score2:
+        player_choice = "{} won".format(pick.game.Team2)
+    else:
+        player_choice = "Draw"
+    
+    gameSpread = abs(pick.game.score1 - pick.game.score2)
+    mySpread = abs(pick.score1 - pick.score2)
+
+
+    context = {'pick': pick, 'game_res': game_res, 'player_choice': player_choice, 
+        'nBonus': nBonus, 'win_diff': win_diff, 'spread': abs(gameSpread - mySpread), 
+        'gameSpread': gameSpread, 'mySpread': mySpread}
+    return render(request, 'rwc19/pointsView.html', context)

@@ -94,6 +94,10 @@ td.formtable{
   text-align: center;
 }
 
+a.pointsLink:link{
+  color: yellow;
+}
+
 /*  -------------------------------------
 ID Selectors
 ------------------------------------- */
