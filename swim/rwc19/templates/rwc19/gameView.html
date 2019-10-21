@@ -59,7 +59,7 @@ Game Info
                 <td>{{ pick.score1 }}</td>
                 <td>{{ pick.score2 }}</td>
                 {% if game.finished %}
-                  <td>{{ pick.points|floatformat }}</td>
+                  <td><a href="{% url 'rwc19:pointsView' pick.id %}" class="pointsLink">{{ pick.points|floatformat }}</a></td>
                 {% endif %}
               </tr>
               {% endif %}
