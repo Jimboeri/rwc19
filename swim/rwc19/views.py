@@ -22,7 +22,6 @@ def index(request):
     context = {'playerList': playerList}
     return render(request, 'rwc19/index.html', context)
 
-
 @login_required
 def makePicks(request):
     games = Game.objects.all()
