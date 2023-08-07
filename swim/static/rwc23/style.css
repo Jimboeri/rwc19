@@ -1,0 +1,156 @@
+body {
+  font-family:Verdana, Geneva, Arial, sans-serif;
+  background-color: lightblue;
+}
+
+ .rwc_background{
+  background-color: lightblue;
+}
+
+.lastseen {
+  font-style: italic;
+}
+
+.descr {
+  font-style: italic;
+}
+
+.topic {
+  font-family: Monospace;
+  color: blue;   
+}
+
+.payload {
+  color: #0b772f; /*medium green */
+/*     font-weight: bold;  */
+}
+
+.nodename {
+  font-weight: bold;
+}
+
+.content_block {
+  border-style: groove;
+  border: 5px;
+  border-radius: 15px;
+  padding: 10px;
+  color: white;
+  background-color: blue;
+  margin: 10px 0px 10px 0px; 
+}
+
+.action_button{
+  float: right;
+}
+
+.action_button{
+  ;
+}
+
+.nodeDownLink{
+  color: red;
+}
+
+.battWarning{
+  color: orange;
+}
+
+.battCritical{
+  color: orangered;
+}
+
+.yellow{
+  color: yellow
+}
+
+.logo {
+  max-width: 15%;
+  padding: 10px 10px 10px 10px;
+}
+
+.wrap_cell {
+  width: 50%;
+}
+
+.heading_text {
+  font-size: 5vw;
+  font-weight: bold;
+}
+
+.jw_mob {
+  font-size: 4vw;
+  font-weight: bold;
+}
+
+table.formtable{
+  text-align: center;
+}
+
+th.formtable {
+  text-align: center;
+}
+
+td.formtable {
+  text-align: center;
+}
+
+a.pointsLink {
+  color: yellow;
+}
+
+a.pointsLink:hover {
+  color: yellow;
+}
+
+a.pointsLinkDark {
+  color: blue;
+}
+
+
+/*  -------------------------------------
+ID Selectors
+------------------------------------- */
+#mypicks td, #mypicks th {
+  border: 1px solid #ddd;
+  padding: 4px;
+}
+
+#logged_in {
+  float: right;
+}
+
+
+/* -------------------------------------
+    HEADER, FOOTER, MAIN
+------------------------------------- */
+
+.content-block {
+  padding-bottom: 10px;
+  padding-top: 10px;
+}
+
+.footer {
+  clear: both;
+  Margin-top: 10px;
+  text-align: center;
+  width: 100%; 
+}
+
+.footer td,
+  .footer p,
+  .footer span,
+  .footer a {
+    /*color: #999999;*/
+    font-size: 12px;
+    text-align: center; 
+}
+
+/* unsure why this is a good thing !   */
+.apple-link a {
+    color: inherit !important;
+    font-family: inherit !important;
+    font-size: inherit !important;
+    font-weight: inherit !important;
+    line-height: inherit !important;
+    text-decoration: none !important; 
+  }

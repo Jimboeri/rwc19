@@ -1,0 +1,18 @@
+{% extends "rwc23/email-base.html" %}
+
+{% block title %}
+Activation confirmation
+{% endblock %}
+
+{% block email-body %}
+
+  <p>Hello!</p>
+
+  <h1>Confirm your email address</h1>
+
+  <p>We just need to confirm that {{ email_addr }} is your email address. Click below to confirm.</p>
+
+  <a class = "maillink" href="{{ protocol }}://{{ domain }}{% url 'rwc23:activate' uid token %}">Confirm address</a>
+
+  <p class="explain">If you have received this message in error it probably means someone has tried to register on our system as you. Don't worry, just ignore this email and the registration will be invalidated.</p>
+{% endblock %}

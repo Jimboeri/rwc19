@@ -1,0 +1,67 @@
+{% extends "rwc23/base.html" %}
+
+{% block pagerefresh %}<meta http-equiv="refresh" content="30">{% endblock %}
+
+{% block title %}
+Openwater swimmers RWC 2023 competition
+{% endblock %}
+
+{% block web-body %}
+
+<div id="picks">
+  <h1 class="jw_mob">My picks</h1>
+    {% if user.profile.prediction_set.all %}
+      <table id="mypicks">
+        <tr>
+          <th>Game</th>
+          <th> </th>
+          <th>Result</th>
+          <th>Your selection</th>
+          <th>Points</th>
+        </tr>
+      {% for pick in user.profile.prediction_set.all %}
+        <tr>
+          <td><a href="{% url 'rwc23:gameView' pick.game.id %}">{{ pick.game }}</a></td>
+          {% if pick.game.finished %}
+            <td>Finished</td><td>{{ pick.game.score1}} : {{ pick.game.score2}}</td>
+          {% else %}
+            <td></td><td></td>
+          {% endif %}
+          {% if pick.score1 != 0 or pick.score2 != 0 %}
+            <td>{{ pick.score1}} : {{ pick.score2}}</td>
+          {% else %}
+            <td>No picks entered</td>
+          {% endif %}
+          {% if pick.game.finished %}
+            <td><a href="{% url 'rwc23:pointsView' pick.id %}" class="pointsLinkDark">{{ pick.points|floatformat }}</a></td>
+          {% endif %}
+        </tr>
+      {% endfor %}
+      </table>
+    {% else %}
+      No Predictions
+    {% endif %}
+  </div>
+  <span id="pick_update_button" class="warning_button">
+    <a href="{% url 'rwc23:pickUpdate' %}" class="btn btn-link btn-warning" role="button">Change my picks</a>
+  </span>
+  <div id="players">
+  <p>
+  </p>
+  <h1 class="jw_mob">Player List</h1>
+  <table id="mypicks">
+    <tr>
+      <th>Player</th>
+      <th>Points</th>
+    </tr>
+    
+    {% for player in playerList%}
+    <tr>
+       <td><a href="{% url 'rwc23:playerDets' player.user.id %}">{{ player.user.username|title }}</a></td>
+       <td>{{ player.totalPoints|floatformat }}</td>
+    </tr>
+    {% endfor %}
+ 
+  </div>
+ 
+{% endblock %}

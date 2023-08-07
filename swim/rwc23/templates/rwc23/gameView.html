@@ -1,0 +1,75 @@
+{% extends "rwc23/base.html" %}
+
+{% block title %}
+Game Info
+{% endblock %}
+
+{% block web-body %}
+<div class="rwc_background">
+  <div id="node-header"><h3>Game information</h3></div>
+    <div id="node_detail" class="content_block">
+      <div id="node_det_table">
+        {% if user.is_staff %}
+          <span id="node_cancel_button" class="cancel_button">
+            <a href="{% url 'rwc23:gameEdit' game.id %}" class="btn btn-link btn-outline-warning" role="button">Edit player picks</a>
+          </span>
+        {% endif %}
+        {% if user.username == 'jim' %}
+          <span id="node_cancel_button" class="cancel_button">
+            <a href="{% url 'rwc23:email_results' game.id %}" class="btn btn-link btn-outline-warning" role="button">Email results</a>
+          </span>
+        {% endif %}
+        <table>
+            <tr>
+                <td>Date</td>
+                <td>{{ game.gamedate }}</td>
+              </tr>
+ 
+              <tr>
+                <td>{{ game.Team1 }} score</td>
+                <td>{{ game.score1 }}</td>
+              </tr>
+              <tr>
+                <td>{{ game.Team2 }} score</td>
+                <td>{{ game.score2 }}</td>
+              </tr>
+              <tr>
+                {% if game.finished %}
+                <td>Finished</td>
+                {% else %}
+                <td></td>
+                {% endif %}
+              </tr>
+         
+          </table>
+          <h2>Player picks</h2>
+          <table  id="mypicks">
+              <tr>
+                  <th>Player</th>
+                  <th>{{game.Team1}}</th>
+                  <th>{{game.Team2}}</th>
+                  {% if game.finished %}
+                    <th>Points</th>
+                  {% endif %}
+              </tr>
+            {% for pick in picks %}
+              {% if not pick.player.is_admin %}
+              <tr>
+                <td>{{ pick.player.user.username|title}}</td>
+                <td>{{ pick.score1 }}</td>
+                <td>{{ pick.score2 }}</td>
+                {% if game.finished %}
+                  <td><a href="{% url 'rwc23:pointsView' pick.id %}" class="pointsLink">{{ pick.points|floatformat }}</a></td>
+                {% endif %}
+              </tr>
+              {% endif %}
+            {% endfor %}
+          </table>
+        <span id="node_cancel_button" class="cancel_button">
+          <a href="{% url 'rwc23:index' %}" class="btn btn-link btn-outline-warning" role="button">Cancel</a>
+        </span>
+    </div>
+  </div>
+ 
+</div>
+{% endblock %}

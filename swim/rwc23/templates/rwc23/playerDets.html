@@ -1,0 +1,47 @@
+{% extends "rwc23/base.html" %}
+
+{% block title %}
+Player info and picks
+{% endblock %}
+
+{% block web-body %}
+<div class="rwc_background">
+  <div id="player-header"><h3>Player info</h3></div>
+    <div id="player_detail" class="content_block">
+      <div id="player_det_table">
+        {{ player.user.username|title}}
+          
+        <table id="mypicks">
+          <tr>
+            <th>Game</th>
+            <th>Actual score</th>
+            <th>Selection</th>
+            <th>Points</th>
+          </tr>
+          {% for pick in picks %}
+            <tr>
+              <td>{{ pick.textname}}</td>
+              {% if pick.game.finished %}
+                <td>{{ pick.game.score1 }} : {{ pick.game.score2 }}</td>
+              {% else %}
+                <td></td>
+              {% endif %}
+              {% if pick.score1 != 0 or pick.score2 != 0 %}
+                <td>{{ pick.score1}} : {{ pick.score2}}</td>
+              {% else %}
+                <td>No picks entered</td>
+              {% endif %}
+              {% if pick.game.finished %}
+                <td><a href="{% url 'rwc23:pointsView' pick.id %}" class="pointsLink">{{ pick.points|floatformat }}</a></td>
+              {% endif %}
+            </tr>
+            {% endfor %}
+          </table>
+        <span id="node_cancel_button" class="cancel_button">
+          <a href="{% url 'rwc23:index' %}" class="btn btn-link btn-outline-warning" role="button">Home</a>
+        </span>
+    </div>
+  </div>
+ 
+</div>
+{% endblock %}

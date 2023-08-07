@@ -1,0 +1,7 @@
+Hello {{ username }}!
+
+To confirm your registration, visit the following link:
+
+{{ protocol }}://{{ domain }}{% url 'rwc23:activate' uid token %}
+
+Welcome to Beedb

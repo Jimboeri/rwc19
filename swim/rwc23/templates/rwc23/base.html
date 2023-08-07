@@ -1,0 +1,96 @@
+{% load static %}
+<!doctype html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="{% static "rwc23/style.css" %}">    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"> 
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    {% block pagerefresh %}<meta http-equiv="refresh" content="3600">{% endblock %}
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-154341356-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-154341356-1');
+    </script>
+
+    <title>
+	    {% block title %}
+        Openwater swimmers RWC 2023 competition
+      {% endblock %}
+    </title>
+  </head>
+  <body class="rwc_background">
+    <div class="container-fluid">
+      <div id="logged_in">
+        {% if user.is_authenticated %}
+          Hi {{ user.username|capfirst }} <a href="{% url 'rwc23:logout' %}">logout</a>
+        {% else %}
+          <a href="{% url 'rwc23:login' %}">login</a>
+        {% endif %}
+      </div>
+      <div id="pg_header">
+        <img src="{% static 'rwc23/Character6.jpg' %}" class = "logo">
+        <span class="heading_text">RWC 23 competition</span>
+      </div>
+
+      {% block navbar %}
+      <nav class="navbar navbar-expand-md bg-dark navbar-dark">
+       
+        <!-- Toggler/collapsibe Button -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <!-- Navbar links -->
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+          <ul class="navbar-nav">
+            {% if meactive %}
+              <li class="nav-item active">
+            {% else %}
+              <li class="nav-item">
+            {% endif %}
+              <a class="nav-link" href="{% url 'rwc23:index' %}">Current round</a>
+            </li>
+            {% if user.is_superuser %}
+              <li class="nav-item">
+                {% comment %}
+                <a class="nav-link" href="{% url 'beedb:adminMenu' %}">Admin options</a>
+                {% endcomment %}
+              </li>
+            {% endif %}
+
+            <li class="nav-item right">
+              <a class="nav-link" href="{% url 'rwc23:about' %}">About</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      {% endblock %}
+
+
+      {% block web-body %}
+        RWC 19
+      {% endblock %}
+      <!-- START FOOTER -->
+      <div class="footer">
+        <table class="footer">
+          <tr>
+            <td class="content-block">
+              <span class="apple-link">Jim's amazing RWC Pick system</span>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <!-- END FOOTER -->
+    </div>
+  </body>
+</html>

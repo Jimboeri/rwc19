@@ -37,7 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize', # for humanize template tags
     'rwc19.apps.Rwc19Config',
+    'rwc23.apps.Rwc23Config',
 ]
 
 MIDDLEWARE = [
@@ -91,6 +93,32 @@ DATABASES = {
 }
 }
 
+# LOGGING
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
+    },
+
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'DEBUG',
+        'formatter': 'simple',
+    },
+}
 
 
 # Password validation
@@ -130,16 +158,19 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = '/code/swim/static/'
 
 # Login settings
-LOGOUT_REDIRECT_URL = "rwc19:index"
+LOGOUT_REDIRECT_URL = "rwc23:index"
 LOGIN_URL = "/accounts/login"
-LOGIN_REDIRECT_URL = "rwc19:index"
+LOGIN_REDIRECT_URL = "rwc23:index"
 
 # Email settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'rwc19@west.net.nz'
-EMAIL_HOST_PASSWORD = 'Rwhuck1tt'
+EMAIL_HOST_USER = 'auto@west.net.nz'
+EMAIL_HOST_PASSWORD = 'urcpgqoivufpxkbk'
+
+CSRF_TRUSTED_ORIGINS = ["https://*.west.net.nz", "http://localhost"]

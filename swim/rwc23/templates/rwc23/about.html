@@ -1,0 +1,74 @@
+{% extends "rwc23/base.html" %}
+
+{% block title %}
+Openwater swimmers RWC 2023 competition
+{% endblock %}
+
+{% block web-body %}
+<h1>Rules</h1>
+<ol>
+    <li>You must be an open-water swimmer on Auckland North shore, or be associated with one. 
+        Basically if you know Jo, Alton, Jim, Geoff or Helen you are in.</li>
+    <li>The game will be a series of mini-competitions, one a week. The first 5 are weeks 1 - 5 of the round robin competition.
+        The next 3 will be the quarter finals, semi finals & then the final.</li>
+    <li>$5 to enter each week. Based on feedback we may increase the entry to $10 for the last few weeks.</li>
+    <li>Predictions must be provided via the Open Water swimming social WhatsApp group or Jim’s new website. 
+        Entries must be received a minimum of 15 minutes before kick-off.</li>
+    <li>People who have paid (or pledged their entry fee), but forget to post their predicted score, or choose not to post a predicted score, 
+        will be assigned 0 points.</li>
+
+</ol>
+<h1>Scoring</h1>
+    <ol>
+        <li>You must pick the winning team, or a draw, to get any points for that game.</li>
+        <li>If you don't get your pick in before the game starts you don't get any points</li>
+        <li>If you pick a draw you get 25 points (bonus for being brave).</li>
+        <li>Your score is then based on points differential. The closer your selection is to the game score the more points you get..</li>
+    </ol>
+
+    <table id="pointsTable">
+    <tr>
+        <th>Difference</th>
+        <th>Points</th>
+        <th>Comments</th>
+    </tr>
+        <tr><td>0</td><td>20</td><td>You got the points differential exactly right</td>
+    </tr>
+    <tr><td>1</td><td>19</td></tr>
+    <tr><td>2</td><td>18</td></tr>
+    <tr><td>3</td><td>17</td></tr>
+    <tr><td>4</td><td>16</td></tr>
+    <tr><td>5</td><td>15</td></tr>
+    <tr><td>6</td><td>14</td></tr>
+    <tr><td>7</td><td>13</td></tr>
+    <tr><td>8</td><td>12</td></tr>
+    <tr><td>9</td><td>11</td></tr>
+    <tr><td>10</td><td>10</td></tr>
+    <tr><td>11</td><td>9</td></tr>
+    <tr><td>12</td><td>8</td></tr>
+    <tr><td>13</td><td>7</td></tr>
+    <tr><td>14</td><td>6</td></tr>
+    <tr><td>15 or more</td><td>5</td><td>Everyone who picks the winner right gets at least 5 points</td></tr>
+    </table>
+
+    <h1>Prizes</h1>
+    <ul>
+        <li>A coffee and a muffin (or equivalent) will be awarded to the winner of every round.</li>
+        <li>The remainder of the cash will accumulate until after the final, when a first, second, third and consolation prize is awarded, 
+            for the players with the lowest, second-lowest, third-lowest and highest points scores.</li>
+    </ul>
+
+    <h1>Judging</h1>
+<ul>
+<li>Meegan ‘the accountant’ Brewer has reviewed the points calculations. 
+    Jim ‘don’t call me honey’ West and Jo ‘Frau’ Hammer are administrators, and nominally the judges, and their decision is final. 
+    Recourse to legal and mediation services will be limited because the billable minutes will erode all gains.</li>
+<li>The winner of each round is the person who first gets the actual result correct, 
+    then whose estimated score is closest to that of the winning team, in combination with the points difference (or spread). 
+    Getting close to the winning score is twice as important as getting close to the points difference. </li>
+</ul>
+    <span id="node_cancel_button" class="cancel_button">
+        <a href="{% url 'rwc23:index' %}" class="btn btn-link btn-outline-warning" role="button">Home</a>
+    </span>
+ 
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends "rwc23/base.html" %}
+
+{% block title %}
+    Sign Up - {{ block.super }}
+{% endblock %}
+
+{% block web-body %}
+
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6">
+            <h4>Sign Up</h4>
+            <hr>
+            {% if messages %}
+                {% for message in messages %}
+                    <p class="alert alert-info">{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+
+            <form method="post">
+
+                {% csrf_token %}
+
+                <table class="table">
+                    {{ form.as_table }}
+                    <tr>
+                        <td><input type="hidden" name="next" value="{{ next }}"></td>
+                        <td><button type="submit" class="btn btn-primary">Submit</button></td>
+                    </tr>
+                </table>
+
+            </form>
+        </div>
+
+        <div class="col-lg-6 col-md-6 col-sm-6">
+            <h4>Related Links</h4>
+            <p>
+                <a href="{% url 'rwc23:password_reset' %}">Forgot Password?</a> <br>
+                <a href="{% url 'rwc23:login' %}">Login.</a> <br>
+            </p>
+        </div>
+
+    </div>
+
+{% endblock %}

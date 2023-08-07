@@ -1,0 +1,67 @@
+{% extends "rwc23/base.html" %}
+
+{% block title %}
+Game Edit
+{% endblock %}
+
+{% block web-body %}
+<div class="rwc_background"> 
+  <div id="node-header"><h3>Update Predictions</h3></div>
+    <div id="node_detail" class="content_block">
+      <div id="node_det_table">
+        <form action="{% url 'rwc23:gameEdit' gForm.instance.id %}" method="POST">
+          {% csrf_token %}
+          {{ formset.management_form }}
+          {{ gForm.non_field_errors}}
+          {{ gForm.instance.Team1 }} v {{ gForm.instance.Team2 }}
+           <table>
+
+            <tr>
+                <td>Date</td>
+                <td>{{ gForm.instance.gamedate }}</td>
+              </tr>
+ 
+              <tr>
+                <td>{{ gForm.instance.Team1 }} score</td>
+                <td>{{ gForm.score1 }}</td>
+              </tr>
+              <tr>
+                <td>{{ gForm.instance.Team2 }} score</td>
+                <td>{{ gForm.score2 }}</td>
+              </tr>
+              <tr>
+                <td>Finished</td>
+                <td>{{ gForm.finished }}</td>
+              </tr>    
+         
+          </table>
+          <h2>Update player picks</h2>
+          <table class='formtable'>
+            <tr class='formtable'>
+              <th></th>
+              <th class='formtable'>{{ gForm.instance.Team1 }} </th>
+              <th class='formtable'>{{ gForm.instance.Team2 }} </th>
+              <th class='formtable'>Over ride</th>
+              <th class='formtable'>Points</th>
+            </tr>
+            {% for form in formset %}
+              <tr>
+                <td class='formtable'>{{form.instance.player.user.username|title}}</td>
+                <td class='formtable'>{{ form.score1 }}</td>
+                <td class='formtable'>{{ form.score2 }}</td>               
+                <td class='formtable'>{{ form.override }}</td>
+                <td class='formtable'>{{ form.points }}</td>
+                <td>{{ form.id }}</td>
+              </tr>
+              {% endfor %}
+            </table>
+        <input type="submit" value="Submit">
+        <span id="node_cancel_button" class="cancel_button">
+          <a href="{% url 'rwc23:index' %}" class="btn btn-link btn-outline-warning" role="button">Cancel</a>
+        </span>
+      </form>
+    </div>
+  </div>
+ 
+</div>
+{% endblock %}
