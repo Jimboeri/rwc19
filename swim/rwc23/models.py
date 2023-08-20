@@ -62,11 +62,9 @@ class Round(models.Model):
     def __str__(self):
         return(f"{self.Name}")    
 
-
 class Game(models.Model):
     Team1 = models.ForeignKey(Team, on_delete=models.CASCADE)
     Team2 = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="team2",)
-    #Round = models.ForeignKey(Round, on_delete=models.CASCADE, related_name="RWC23")
     Round = models.ForeignKey(Round, on_delete=models.CASCADE)
     gamedate = models.DateTimeField(blank=True, null=True)
     score1 = models.IntegerField(default=0, help_text="Score of 1st team", validators=[MinValueValidator(0,'Negative scores not allowed!')])
@@ -75,16 +73,72 @@ class Game(models.Model):
     finished = models.BooleanField(default=False)
     high_point = models.FloatField(default=0, )
     average = models.DecimalField(default=0, max_digits=5, decimal_places=1)
+    resultText = models.CharField(max_length=50, blank=True, null=True)
 
     class Meta:
         ordering = ["Round", "gamedate"]
 
     def __str__(self):
         return(f"{self.Team1} v {self.Team2} ({self.Round.Name})")
+    
+    def resText(self):
+        if self.finished:
+            if self.score1 > self.score2:
+                resText = f"{self.Team1.teamID} win by {self.score1 - self.score2}"
+            elif self.score1 < self.score2:
+                resText = f"{self.Team2.teamID} win by {self.score2 - self.score1}"
+            else:
+                resText = "Draw"
+        else:
+            resText = "Game not finished"
+        self.resultText = resText
+        self.save()
+        return resText
+
+class PlayerRound(models.Model):
+    player = models.ForeignKey(User, on_delete=models.CASCADE)
+    round = models.ForeignKey(Round, on_delete=models.CASCADE)
+    totalPoints = models.FloatField(default=0, help_text="Total points")
+    lastUpdated = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["round__Order"]
+
+    def __str__(self):
+        return(f"Player : {self.player}, Round : {self.round}")
+
+    def totPoints(self):
+        self.makePreds()
+        pList = Prediction.objects.filter(playerRound = self).all()
+        totScore = 0
+        for p in pList:
+            p.calcScore()
+            if p.game.finished:
+                totScore = totScore + p.points
+        
+        if totScore != self.totalPoints:
+            self.totalPoints = totScore
+            self.lastUpdated = timezone.make_aware(datetime.datetime.now(), timezone.get_current_timezone())
+            self.save()
+
+        return
+    
+    def makePreds(self):
+        """
+        Ensure there are predictions for all games for this player
+        """
+        gList = Game.objects.filter(Round=self.round).all()
+        for g in gList:
+            p = Prediction.objects.filter(playerRound=self, game=g).first()
+            if p == None:
+                p = Prediction(playerRound=self, game=g)
+                p.save()
+
+        return
 
 class Prediction(models.Model):
-    player = models.ForeignKey(User, on_delete=models.CASCADE)
     game = models.ForeignKey(Game, on_delete=models.CASCADE)
+    playerRound = models.ForeignKey(PlayerRound, on_delete=models.CASCADE)
     result = models.IntegerField(default=0,
                                  validators=[MinValueValidator(0,'Negative scores not allowed!'), MaxValueValidator(3,'Invalid result')])
     spread = models.IntegerField(default=0, help_text="Difference between scores", validators=[MinValueValidator(0,'Must have a points difference!')])
@@ -92,15 +146,15 @@ class Prediction(models.Model):
     override = models.BooleanField(default=False)
     lastUpdated = models.DateTimeField(auto_now=True)    
 
-    #class Meta:
-    #    ordering = ["gamedate"]
+    class Meta:
+        ordering = ["game__gamedate"]
 
     def __str__(self):
-        return("Player : {}, Game : {}".format(self.player, self.game))
+        return(f"Player : {self.playerRound.player}, Game : {self.game}")
 
     def calcScore(self):
         # first determine if the player got the result right
-
+        points = 0
         if self.game.finished:
             game_win_diff = abs(self.game.score1 - self.game.score2)
             if self.result == 1:
@@ -123,3 +177,15 @@ class Prediction(models.Model):
 
         return()
 
+    def resText(self):
+        resText = ""
+        if self.result == 1:
+            resText = f"{self.game.Team1.teamID} win by {self.spread}"
+        elif self.result == 2:
+            resText = f"{self.game.Team2.teamID} win by {self.spread}"
+        elif self.result == 3:
+            resText = "Draw"
+        else:
+            resText = "No selection"
+
+        return resText
