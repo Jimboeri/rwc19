@@ -50,8 +50,7 @@ Openwater swimmers RWC 2023 competition
     {% endif %}
   </div>
   <span id="pick_update_button" class="warning_button">
-     <a href="{% url 'rwc23:pickUpdate' currRound.id %}" class="btn btn-link btn-warning" role="button">Change my picks</a> 
-    {% comment %}<a href="{% url 'rwc23:pickUpdate' %}" class="btn btn-link btn-warning" role="button">Change my picks</a>{% endcomment %}
+    <a href="{% url 'rwc23:pickUpdate' %}" class="btn btn-link btn-warning" role="button">Change my picks</a>
   </span>
   <div id="players">
   <p>
@@ -65,7 +64,7 @@ Openwater swimmers RWC 2023 competition
     
     {% for player in playerList%}
     <tr>
-       <td><a href="{% url 'rwc23:playerDets' player.player.id %}">{{ player.player.first_name|title }}</a></td>
+       <td><a href="{% url 'rwc23:playerDets' player.user.id %}">{{ player.user.username|title }}</a></td>
        <td>{{ player.totalPoints|floatformat }}</td>
     </tr>
     {% endfor %}

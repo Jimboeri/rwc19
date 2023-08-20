@@ -3,7 +3,7 @@
 {% block title %}
 Game Edit
 {% endblock %}
-
+ 
 {% block web-body %}
 <div class="rwc_background"> 
   <div id="node-header"><h3>Update Predictions</h3></div>
@@ -46,9 +46,9 @@ Game Edit
             </tr>
             {% for form in formset %}
               <tr>
-                <td class='formtable'>{{form.instance.player.user.username|title}}</td>
-                <td class='formtable'>{{ form.score1 }}</td>
-                <td class='formtable'>{{ form.score2 }}</td>               
+                <td class='formtable'>{{ form.instance.playerRound.player.first_name|title}} {{ form.instance.playerRound.player.last_name|title}}</td>
+                <td class='formtable'>{{ form.result }}</td>
+                <td class='formtable'>{{ form.spread }}</td>               
                 <td class='formtable'>{{ form.override }}</td>
                 <td class='formtable'>{{ form.points }}</td>
                 <td>{{ form.id }}</td>
@@ -57,11 +57,11 @@ Game Edit
             </table>
         <input type="submit" value="Submit">
         <span id="node_cancel_button" class="cancel_button">
-          <a href="{% url 'rwc23:index' %}" class="btn btn-link btn-outline-warning" role="button">Cancel</a>
+          <a href="{% url 'rwc23:gameView' gForm.instance.id %}" class="btn btn-link btn-outline-warning" role="button">Cancel</a>
         </span>
       </form>
     </div>
   </div>
- 
+
 </div>
 {% endblock %}

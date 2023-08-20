@@ -4,6 +4,10 @@
 Game Info
 {% endblock %}
 
+{% comment %}
+This page displays the game information and the player predictions for the game.
+{% endcomment %}
+
 {% block web-body %}
 <div class="rwc_background">
   <div id="node-header"><h3>Points information</h3></div>
@@ -12,44 +16,37 @@ Game Info
         <table>
           <tr>
             <td>Player</td>
-            <td>{{ pick.player.user.username|title }}</td>
+            <td>{{ prediction.playerRound.player.first_name|title }} {{ prediction.playerRound.player.last_name|title }}</td>
           </tr>
-
+          <tr>
+            <td>Game</td>
+            <td>{{ prediction.game }}</td>
+          </tr>
           <tr>
             <td>Date</td>
-            <td>{{ pick.game.gamedate }}</td>
+            <td>{{ prediction.game.gamedate }}</td>
           </tr>
           <tr>
-            <td>Teams</td>
-            <td>{{ pick.game.Team1 }} v {{ pick.game.Team2 }}</td>
-          </tr>
-          <tr>
-            {% if pick.game.finished %}
+            {% if prediction.game.finished %}
               <td>Game has finished</td>
             {% else %}
               <td></td>
             {% endif %}
           </tr>
         </table>
-        <table id="mypicks">
+        <table id="mypredictions">
           <tr>
             <th>Game</th>
-            <th>{{ pick.player.user.username|title }}</th>
-          </tr>
-
-          <tr>
-            <td>{{ pick.game.Team1 }} {{ pick.game.score1 }}:{{ pick.game.score2 }} {{ pick.game.Team2 }}</td>
-            <td>{{ pick.game.Team1 }} {{ pick.score1 }}:{{ pick.score2 }} {{ pick.game.Team2 }}</td>
           </tr>
 
           <tr>
             <td>{{ game_res }}</td>
             <td>{{ player_choice }}</td>
-            {% if pick.result %}
+            {% if prediction.result %}
               <td>Points calcluated below</td>
             {% else %}
-              {% if pick.noPicks %}
-                <td>No picks entered, gets game average</td>
+              {% if prediction.nopredictions %}
+                <td>No predictions entered, gets game average</td>
               {% else %}
                 <td>Wrong result, gets worst of scores from players who got it right</td>
               {% endif %}
@@ -65,8 +62,8 @@ Game Info
         <h2>Points calculation</h2>
           
 
-              <table  id="mypicks">
-              {% if pick.result %}
+              <table  id="mypredictions">
+              {% if prediction.result %}
                 <tr>
                   <td>Half the difference to the winners score:</td>
                   <td>{{ win_diff }}</td>
@@ -80,15 +77,15 @@ Game Info
                   <td>{{ nBonus }}</td>
                 </tr>
                 {% else %}
-                  {% if pick.noPicks %}
+                  {% if prediction.nopredictions %}
                     <tr>
                       <td>No selection, gets game average:</td>
-                      <td>{{ pick.game.average }}</td>
+                      <td>{{ prediction.game.average }}</td>
                     </tr>
                   {% else %}
                   <tr>
-                      <td>Wrong result, gets worst score of correct picks:</td>
-                      <td>{{ pick.game.high_point }}</td>
+                      <td>Wrong result, gets worst score of correct predictions:</td>
+                      <td>{{ prediction.game.high_point }}</td>
                     </tr>
                   {% endif %}
                 {% endif %}

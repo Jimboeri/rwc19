@@ -23,9 +23,6 @@ def gameResult(inGame):
     return(aChoice)
 
 
-#class ContactForm(forms.Form):
-#    descr = forms.CharField(widget=forms.Textarea)
-
 class PickDetailForm(forms.ModelForm):
     class Meta:
         model = Prediction
@@ -33,20 +30,23 @@ class PickDetailForm(forms.ModelForm):
         widgets = {
             'spread': forms.TextInput(attrs={'size': 3}),
         }
+
     def __init__(self, *args, **kwargs):
-        #try:
-            super(PickDetailForm, self).__init__(*args, **kwargs)
-            self.fields['result'] = forms.ChoiceField(choices=gameResult(self.instance.game), help_text="xxx",)
-        #except:
-        #    logging.error("PickDetailForm: __init__ error")
+        super(PickDetailForm, self).__init__(*args, **kwargs)
+        #logging.debug(f"PickDetailForm instance: {self.instance}")
+        self.fields['result'] = forms.ChoiceField(choices=gameResult(self.instance.game))
+
 
 class PickAdminDetailForm(forms.ModelForm):
     class Meta:
         model = Prediction
-        fields = ['spread']
+        fields = ['spread', 'result']
         widgets = {
             'spread': forms.TextInput(attrs={'size': 3}),
         }
+    def __init__(self, *args, **kwargs):
+        super(PickAdminDetailForm, self).__init__(*args, **kwargs)
+        self.fields['result'] = forms.ChoiceField(choices=gameResult(self.instance.game), help_text="xxx",)
 
 
 class gameForm(forms.ModelForm):

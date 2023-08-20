@@ -1,59 +1,61 @@
 {% extends "rwc23/base.html" %}
 
 {% block title %}
-Your picks
+Make your picks
 {% endblock %}
-
+ 
 {% block web-body %}
-<div class="rwc_background">
-  <div id="node-header"><h3>Update Pick information</h3></div>
+<div class="rwc_background"> 
+  <div id="node-header"><h3>Update Predictions</h3></div>
     <div id="node_detail" class="content_block">
       <div id="node_det_table">
-        <form action="{% url 'rwc23:pickUpdate' %}" method="POST">
+        <form action="{% url 'rwc23:pickUpdate' currRound.id %}" method="POST">
+
           {% csrf_token %}
           {{ formset.management_form }}
-          {{ form.non_field_errors}}
-          {% if pastPreds %}
-          <table>
-            <tr>
-              <th>Match</th>
-              <th>Score 1</th>
-              <th>Score 2</th>
-              <th>Result</th>
-            </tr>
-            {% for pred in pastPreds %}
-            <tr>
-              <td>{{pred.game}}</td>
-              <td>{{pred.game.score1}}</td>
-              <td>{{pred.game.score2}}</td>
-              <td>{{pred.result}}</td>
-            </tr>
-            {% endfor %}
-          </table>
-          {% endif %}
-          <table>
-          {% for form in formset %}
-            <tr>
-              <td>{{form.instance.game}}</td>
-              <td>{{ form.result }}</td>
-              <td>{{ form.spread }}</td>
-              {% if form.score1.errors %}
-                <td>{{ form.score1.errors }}</td>
-              {% endif %}
-              {% if form.score2.errors %}
-                <td>{{ form.score2.errors }}</td>
-              {% endif %}
-              <td>{{ form.id }}</td>
-            </tr>
-            {% endfor %}
-          </table>
+          {{ gForm.non_field_errors}}
+
+          <h2>Update your picks</h2>
+          <table class='formtable'>
+            {% for form in formset %}
+              <tr>
+                <td class='formtable'>{{ form.instance.game }}</td>
+                <td class='formtable'>{{ form.result }}</td>
+                <td class='formtable'>{{ form.spread }}</td>               
+                <td>{{ form.id }}</td>
+              </tr>
+              {% endfor %}
+            </table>
         <input type="submit" value="Submit">
         <span id="node_cancel_button" class="cancel_button">
-          <a href="{% url 'rwc23:index' %}" class="btn btn-link btn-outline-warning" role="button">Cancel</a>
+          <a href="{% url 'rwc23:index'  %}" class="btn btn-link btn-outline-warning" role="button">Cancel</a>
         </span>
       </form>
+      {% if pastPreds %}
+      <h3>Past Predictions</h3>
+      <table>
+        <tr>
+          <th>Match</th>
+          <th>Scores</th>
+          <th>Result</th>
+          <th>Your selection</th>
+          <th>Your Points</th>
+        </tr>
+        {% for pred in pastPreds %}
+          <tr>
+            <td>{{pred.game}}</td>
+            <td>{{pred.game.score1}} : {{pred.game.score2}}</td>
+            <td>{{pred.game.resText}}</td>
+            <td>{{pred.resText}}</td>
+            <td>{{pred.points}}</td>
+          </tr>
+        {% endfor %}
+      </table>
+    {% endif %}
+
+
     </div>
   </div>
- 
+
 </div>
 {% endblock %}

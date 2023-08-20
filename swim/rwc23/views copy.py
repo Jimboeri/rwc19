@@ -22,15 +22,37 @@ from django.forms import inlineformset_factory, modelformset_factory
 # Create your views here.
 
 @login_required
-def index(request):     # RWC23 unused
+def index(request):
     playerList = Profile.objects.order_by('totalPoints').filter(is_admin = "False")
     context = {'playerList': playerList}
     context["rounds"] = Round.objects.all()
     context["games"] = Game.objects.all().order_by("Round", "gamedate")
     return render(request, 'rwc23/index.html', context)
 
+
 @login_required
-def currRound(request):         # RWC23 OK
+def dispRound(request, player_id, round_id):         # checked for rwc23
+    
+    # get the round object
+    cRound = Round.objects.filter(id = round_id).first()
+
+    # get the player object
+    cPlayer = User.objects.filter(id = player_id).first()
+    
+    # ensure a record exists for this player and this round
+    playerRound, created = PlayerRound.objects.get_or_create(player = cPlayer, round = cRound)
+    playerRound.totPoints()
+
+    playerList = PlayerRound.objects.order_by('totalPoints').filter(round = cRound)
+
+    context = {'playerList': playerList}
+    context["currRound"] = cRound
+    context["currPredictions"] = Prediction.objects.filter(playerRound = playerRound).all()
+    
+    return render(request, 'rwc23/currRound.html', context)
+
+@login_required
+def currRound(request):         # checked for rwc23
     if request.user.is_superuser:
         rounds = Round.objects.all()
         currRndOrder = 0
@@ -73,91 +95,144 @@ def currRound(request):         # RWC23 OK
     for g in currRound.game_set.all():
         Prediction.objects.get_or_create(playerRound = currPlayerRound, game = g)
 
-    currPlayerRound.totPoints()
-    cPred = Prediction.objects.filter(playerRound = currPlayerRound).all()
+    return HttpResponseRedirect(reverse('rwc23:dispRound', args=(request.user.id, currRound.id,)))
 
-    playerList = PlayerRound.objects.order_by('totalPoints').filter(round = currRound)
-    context = {'playerList': playerList}
-    context["currRound"] = currRound
-    context["currPredictions"] = cPred
-    return render(request, 'rwc23/currRound.html', context)
+    #dispRound(request, request.user.id, currRound.id)
+    #return
 
-@login_required
-def dispRound(request, player_id, round_id):         # RWC23 OK
-    
-    # get the round object
-    cRound = Round.objects.filter(id = round_id).first()
+    #currPlayerRound.totPoints()
+    #cPred = Prediction.objects.filter(playerRound = currPlayerRound).all()
 
-    # get the player object
-    cPlayer = User.objects.filter(id = player_id).first()
-    
-    # ensure a record exists for this player and this round
-    playerRound, created = PlayerRound.objects.get_or_create(player = cPlayer, round = cRound)
-    playerRound.totPoints()
-
-    playerList = PlayerRound.objects.order_by('totalPoints').filter(round = cRound)
-    context = {'playerList': playerList}
-    context["currRound"] = cRound
-    context["currPredictions"] = Prediction.objects.filter(playerRound = playerRound).order_by('game__gamedate')
-    return render(request, 'rwc23/currRound.html', context)
+    #playerList = PlayerRound.objects.order_by('totalPoints').filter(round = currRound)
+    #context = {'playerList': playerList}
+    #context["currRound"] = currRound
+    #context["currPredictions"] = cPred
+    #return render(request, 'rwc23/currRound.html', context)
 
 @login_required
-def makePicks(request, rnd_id):         # RWC23 OK
+def makePicks_old(request, rnd_id):         # checked for rwc23
 
-    logging.debug(" ")
-    logging.debug(f"Enter makePics, request method = {request.method}")
-    #currRound = Round.objects.filter(status='C').first()
-    currRound = Round.objects.filter(id=rnd_id).first()
+    #currRound = Round.objects.filter(id=rnd_id).first()
+    currRound = Round.objects.filter(status='C').first()
     logging.debug(f"Round = {currRound.Name}")
     currPlayerRound = PlayerRound.objects.filter(player = request.user, round = currRound).first()
     logging.debug(f"PlayerRound = {currPlayerRound}")
-    pastPreds = Prediction.objects.filter(playerRound = currPlayerRound).filter(game__finished=True).order_by('game__gamedate')
+    pastPreds = []
+    futurePreds = []
+
+    # lets ensure that all games have a prediction
+    for g in currRound.game_set.all():
+        pred, create = Prediction.objects.get_or_create(playerRound = currPlayerRound, game = g)
+        pred.save()
+
+    allPreds = Prediction.objects.filter(playerRound = currPlayerRound).order_by('game__gamedate')
+    for pr in allPreds:
+        pr.calcScore()
+        if pr.game.gamedate < timezone.make_aware(datetime.datetime.now(), timezone.get_current_timezone()):
+            pastPreds.append(pr)
+        else:    
+            futurePreds.append(pr)
+    #logging.debug(f"Number of past predictions = {len(pastPreds)}, number of future predictions = {len(futurePreds)}")
+
+    # update the total points for the player
+    #usrProfile = Profile.objects.get(user=request.user)
+    #usrProfile.totalPoints = totPoints
+    #usrProfile.save()
     
     PickFormSet = modelformset_factory(Prediction, form=PickDetailForm, extra=0)
-
-    querySet = Prediction.objects.filter(playerRound = currPlayerRound).exclude(game__finished=True).order_by('game__gamedate')
     
+    querySet = Prediction.objects.filter(playerRound = currPlayerRound).exclude(game__finished=True).order_by('game__gamedate')
+    logging.debug(f"Predictions selected = {len(querySet)}")
+
     if request.method == 'POST':
-        
         fPicks = PickFormSet(request.POST, queryset = querySet)
         #fPicks = PickFormSet(queryset = querySet)
-        logging.debug(fPicks)
-        for p in fPicks:
-            logging.debug(p)
+        logging.debug(f"request.POST = {request.POST}")
+        logging.debug(f"querySet = {querySet}")
 
-        logging.debug("----------------")
-        #print(len(fPicks))
         if fPicks.is_valid():
             fPicks.save()
-            return HttpResponseRedirect(reverse('rwc23:dispRound', args=(request.user.id, rnd_id)))
+            return HttpResponseRedirect(reverse('rwc23:index'))
         else:
-            print("invalid response, error = {}".format(fPicks.errors))
+            print("Invalid response, error = {}".format(fPicks.errors))
             for x in fPicks:
-                logging.debug(x.errors)
-    
-    # if a GET (or any other method) we'll create a blank form
+                print(x.errors)
+     # if a GET (or any other method) we'll create a blank form
     else:
         fPicks = PickFormSet(queryset = querySet)
-        
-    context = {'formset': fPicks, 'pastPreds': pastPreds, 'currRound': currRound}
+        logging.debug(f"fPicks = {fPicks}")
+
+    logging.debug(f"Number of past predictions = {len(pastPreds)}")    
+    context = {'formset': fPicks, 'pastPreds': pastPreds, 'round': rnd_id, 'futurePreds': futurePreds}
+    return render(request, 'rwc23/pickUpdate.html', context)
+
+@login_required
+def makePicks(request):         # checked for rwc23
+
+    #currRound = Round.objects.filter(id=rnd_id).first()
+    currRound = Round.objects.filter(status='C').first()
+    logging.debug(f"Round = {currRound.Name}")
+    currPlayerRound = PlayerRound.objects.filter(player = request.user, round = currRound).first()
+    logging.debug(f"PlayerRound = {currPlayerRound}")
+    pastPreds = []
+    futurePreds = []
+
+    # lets ensure that all games have a prediction
+    for g in currRound.game_set.all():
+        pred, create = Prediction.objects.get_or_create(playerRound = currPlayerRound, game = g)
+        pred.save()
+
+    allPreds = Prediction.objects.filter(playerRound = currPlayerRound).order_by('game__gamedate')
+    for pr in allPreds:
+        pr.calcScore()
+        if pr.game.gamedate < timezone.make_aware(datetime.datetime.now(), timezone.get_current_timezone()):
+            pastPreds.append(pr)
+        else:    
+            futurePreds.append(pr)
+    #logging.debug(f"Number of past predictions = {len(pastPreds)}, number of future predictions = {len(futurePreds)}")
+
+    # update the total points for the player
+    #usrProfile = Profile.objects.get(user=request.user)
+    #usrProfile.totalPoints = totPoints
+    #usrProfile.save()
+    
+    PickFormSet = modelformset_factory(Prediction, form=PickDetailForm, extra=0)
+    
+    querySet = Prediction.objects.filter(playerRound = currPlayerRound).exclude(game__finished=True).order_by('game__gamedate')
+    logging.debug(f"Predictions selected = {len(querySet)}")
+
+    if request.method == 'POST':
+        fPicks = PickFormSet(request.POST, queryset = querySet)
+        #fPicks = PickFormSet(queryset = querySet)
+        logging.debug(f"request.POST = {request.POST}")
+        logging.debug(f"querySet = {querySet}")
+
+        if fPicks.is_valid():
+            fPicks.save()
+            return HttpResponseRedirect(reverse('rwc23:index'))
+        else:
+            print("Invalid response, error = {}".format(fPicks.errors))
+            for x in fPicks:
+                print(x.errors)
+     # if a GET (or any other method) we'll create a blank form
+    else:
+        fPicks = PickFormSet(queryset = querySet)
+        logging.debug(f"fPicks = {fPicks}")
+
+    logging.debug(f"Number of past predictions = {len(pastPreds)}")    
+    context = {'formset': fPicks, 'pastPreds': pastPreds, 'futurePreds': futurePreds}
     return render(request, 'rwc23/pickUpdate.html', context)
 
 @login_required
 def playerDets(request, player_id):
     player = get_object_or_404(User, id = player_id)
-    for plRnd in PlayerRound.objects.filter(player = player).all():
-        plRnd.totPoints()
+    #picks = player.prediction_set.all().order_by('gamedate')
 
     context = {'player': player}
     return render(request, 'rwc23/playerDets.html', context)
 
 @login_required
-def gameEdit(request, game_id):     #RWC23 OK
-    """
-    Screen to allow game updates - scores etc
-    Also to allow admin to override results
-    Must only be avail;able to staff
-    """
+def gameEdit(request, game_id):
     game = get_object_or_404(Game, id = game_id)
 
     players = Profile.objects.all().filter(is_admin = "False")
@@ -195,7 +270,6 @@ def gameEdit(request, game_id):     #RWC23 OK
             pList = Prediction.objects.filter(game=game)
 
             if game.finished:
-                game.resText()
                 for p in pList:             # first pass works out scores for those with the right result
                     if not p.override:
                         p.calcScore()
@@ -230,8 +304,8 @@ def gameView(request, game_id):         # checked for rwc23
 @login_required
 def otherRounds(request):         # checked for rwc23
 
-    rounds = Round.objects.all().order_by('Order')
-    context = {'rounds': rounds}
+    rounds = Round.objects.all()
+    context = {'rounds': rounds, 'user': request.user}
     return render(request, 'rwc23/otherRounds.html', context)
 
 @login_required
@@ -277,9 +351,41 @@ def email_results(request, game_id):
 
 @login_required
 def pointsView(request, pick_id):
-    prediction = get_object_or_404(Prediction, id = pick_id)
+    pick = get_object_or_404(Prediction, id = pick_id)
+    nBonus = 0
+    win_diff = 0.0
+    if pick.game.score1 > pick.game.score2:
+        game_res = "{} won".format(pick.game.Team1)
+        if pick.result:
+            if pick.score1 == pick.game.score1:
+                nBonus = -5
+            win_diff = abs(pick.game.score1 - pick.score1)/2
+    elif pick.game.score1 < pick.game.score2:
+        game_res = "{} won".format(pick.game.Team2)
+        if pick.result: 
+            if pick.score2 == pick.game.score2:
+                nBonus = -5
+            win_diff = abs(pick.game.score2 - pick.score2)/2
+    else:
+        if pick.noPicks:
+            game_res = "No selection made"
+        else:
+            game_res = "Draw"
+
+    if pick.score1 > pick.score2:
+        player_choice = "{} won".format(pick.game.Team1)
+    elif pick.score1 < pick.score2:
+        player_choice = "{} won".format(pick.game.Team2)
+    else:
+        player_choice = "Draw"
     
-    context = {'prediction': prediction}
+    gameSpread = abs(pick.game.score1 - pick.game.score2)
+    mySpread = abs(pick.score1 - pick.score2)
+
+
+    context = {'pick': pick, 'game_res': game_res, 'player_choice': player_choice, 
+        'nBonus': nBonus, 'win_diff': win_diff, 'spread': abs(gameSpread - mySpread), 
+        'gameSpread': gameSpread, 'mySpread': mySpread}
     return render(request, 'rwc23/pointsView.html', context)
 
 def adminGeneral(request):         # checked for rwc23

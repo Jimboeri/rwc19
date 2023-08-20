@@ -8,13 +8,18 @@ app_name='rwc23'
 urlpatterns = [
     path('', views.currRound, name='index'),
     path('accounts/', include('django.contrib.auth.urls')),
-    path('pickupdate/', views.makePicks, name='pickUpdate'),
+    path('pickupdate/<int:rnd_id>/', views.makePicks, name='pickUpdate'),
     path('player/<int:player_id>/', views.playerDets, name='playerDets'),
     path('game/edit/<int:game_id>/', views.gameEdit, name='gameEdit'),
     path('game/view/<int:game_id>/', views.gameView, name='gameView'),
     path('about/', views.about, name='about'),
     path('email_results/<int:game_id>/', views.email_results, name='email_results'),
     path('pointsView/<int:pick_id>/', views.pointsView, name='pointsView'),
+    path('otherrounds/', views.otherRounds, name='otherRounds'),
+    path('disprounds/<int:player_id>/<int:round_id>/', views.dispRound, name='dispRound'),
+
+    # Admin functions
+    path('admin/general/', views.adminGeneral, name='adminGeneral'),
 
     # User management URL's    
     path("logout/", views.logout, name="logout"),

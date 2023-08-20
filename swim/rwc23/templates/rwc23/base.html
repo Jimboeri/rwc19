@@ -60,11 +60,21 @@
             {% endif %}
               <a class="nav-link" href="{% url 'rwc23:index' %}">Current round</a>
             </li>
-            {% if user.is_superuser %}
+            {% if otheractive %}
+              <li class="nav-item active">
+            {% else %}
               <li class="nav-item">
-                {% comment %}
-                <a class="nav-link" href="{% url 'beedb:adminMenu' %}">Admin options</a>
-                {% endcomment %}
+            {% endif %}
+              <a class="nav-link" href="{% url 'rwc23:otherRounds' %}">Other rounds</a>
+            </li>
+            {% if user.is_superuser %}
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                  Admin 
+                </a>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="{% url 'rwc23:adminGeneral' %}">Admin init</a>
+                </div>
               </li>
             {% endif %}
 

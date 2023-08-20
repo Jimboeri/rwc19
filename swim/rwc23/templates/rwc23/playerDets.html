@@ -9,7 +9,42 @@ Player info and picks
   <div id="player-header"><h3>Player info</h3></div>
     <div id="player_detail" class="content_block">
       <div id="player_det_table">
-        {{ player.user.username|title}}
+        {{ player.first_name|title}} {{ player.last_name|title }}
+
+        {% for rnd in player.playerround_set.all %}
+          <div>
+            <button data-toggle="collapse" data-target="#{{ rnd.round.Name|slugify }}" class="btn btn-link btn-outline-info" role="button">{{ rnd.round.Name }}</button> 
+            {% if rnd.totalPoints != 0 %}
+              Points = {{ rnd.totalPoints }}
+            {% endif %}
+            <div id="{{ rnd.round.Name|slugify }}" class="collapse">
+              <table id="player_round_table">
+                <tr>
+                  <th>Game</th>
+                  <th>Actual score</th>
+                  <th>Selection</th>
+                  <th>Points</th>
+                </tr>
+                {% for pick in rnd.prediction_set.all %}
+                  <tr>
+                    <td>{{ pick.game}}</td>
+                    {% if pick.game.finished %}
+                      <td>{{ pick.game.score1 }} : {{ pick.game.score2 }}</td>
+                    {% else %}
+                      <td></td>
+                    {% endif %}
+                    <td>{{ pick.resText }}</td>
+                    {% if pick.game.finished %}
+                      <td><a href="{% url 'rwc23:pointsView' pick.id %}" class="pointsLink">{{ pick.points|floatformat }}</a></td>
+                    {% endif %}
+                  </tr>
+                {% endfor %}
+              </table>
+              {{ rnd.round.Name }}: {{ rnd.totalPoints }}
+            </div>
+          </div>
+        {% endfor %}
+
           
         <table id="mypicks">
           <tr>

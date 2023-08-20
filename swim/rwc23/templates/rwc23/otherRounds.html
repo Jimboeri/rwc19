@@ -1,0 +1,20 @@
+{% extends "rwc23/base.html" %}
+
+{% block pagerefresh %}<meta http-equiv="refresh" content="30">{% endblock %}
+
+{% block title %}
+Openwater swimmers RWC 2023 competition
+{% endblock %}
+
+{% block web-body %}
+
+<div id="picks">
+<h1>Rounds</h1>
+{% for round in rounds %}
+  <div class="round">
+    <a href="{% url 'rwc23:dispRound' user.id round.id %}">{{ round.Name }}</a>
+  </div>
+{% endfor %}
+</div>
+ 
+{% endblock %}
