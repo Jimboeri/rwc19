@@ -1,0 +1,32 @@
+{% extends "rwc23/base.html" %}
+
+{% block title %}
+Admin of player {{ player.first_name|title}} {{ player.last_name|title }}
+{% endblock %}
+
+{% block web-header %}
+{% endblock %}
+
+{% block web-body %}
+<div class="rwc_background">
+  <div id="player-header"><h3>Player info: <b>{{ player.first_name|title}} {{ player.last_name|title }}</b></h3></div>
+    <div id="player_detail" class="content_block">
+      <div id="node_det_table">
+        <form action="{% url 'rwc23:adminUserDetail' player.id %}" method="POST">
+          {% csrf_token %}
+          {{ formset.management_form }}
+          {{ formset.non_field_errors}}
+          <table>
+            {{ userForm.as_table }}
+            {{ profileForm.as_table }}
+          </table>        
+
+          <input type="submit" value="Submit">
+        <span id="node_cancel_button" class="cancel_button">
+          <a href="{% url 'rwc23:adminUsers' %}" class="btn btn-link btn-outline-warning" role="button">Home</a>
+        </span>
+    </div>
+  </div>
+ 
+</div>
+{% endblock %}

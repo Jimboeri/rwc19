@@ -133,3 +133,17 @@ class CustomUserCreationForm(forms.Form):
 
         return user
 
+class adminUserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name']
+
+class adminProfileForm(forms.ModelForm):
+    class Meta:
+        model = models.Profile
+        fields = ['phoneNumber', 'blocked']
+
+class adminPlayerRoundForm(forms.ModelForm):
+    class Meta:
+        model = models.PlayerRound
+        fields = ['paid', 'paidAmount']

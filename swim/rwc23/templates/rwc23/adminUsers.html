@@ -1,0 +1,22 @@
+{% extends "rwc23/base.html" %}
+
+{% block title %}
+Openwater swimmers RWC 2023 competition - User admin
+{% endblock %}
+
+{% block web-body %}
+
+  <div id="players">  
+    <h3>Players</h3>
+    <table class="table-sm">
+      {% for player in players%}
+      <tr>
+        <td>{{ player.first_name|title }} {{ player.last_name|title }}</td>
+        <td><a href="{% url 'rwc23:adminUserPayment' player.id %}" class="btn btn-info" role="button">Payments</a></td>
+        <td><a href="{% url 'rwc23:adminUserDetail' player.id %}" class="btn btn-info" role="button">Name & Contacts</a></td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+ 
+{% endblock %}

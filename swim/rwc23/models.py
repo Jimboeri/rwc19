@@ -12,20 +12,13 @@ class Profile(models.Model):
                                 related_name="RWC23_user",
                                 on_delete=models.CASCADE)
     phoneNumber = models.CharField(max_length=50, blank=True, null=True)
-    totalPoints = models.FloatField(default=0, help_text="Total For and away points")
     is_admin = models.BooleanField(default=False)
+    blocked = models.BooleanField(default=False)
+    FullyPaid = models.BooleanField(default=False)
     
     def __str__(self):
         return self.user.username
 
-    def totPoints(self):
-        pList = Prediction.objects.filter(player=self)
-        totScore = 0
-        for p in pList:
-            if p.game.finished:
-                totScore = totScore + p.points
-        self.totalPoints = totScore
-        return
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
@@ -100,6 +93,8 @@ class PlayerRound(models.Model):
     round = models.ForeignKey(Round, on_delete=models.CASCADE)
     totalPoints = models.FloatField(default=0, help_text="Total points")
     lastUpdated = models.DateTimeField(auto_now=True)
+    paid = models.BooleanField(default=False)
+    paidAmount = models.FloatField(default=0, help_text="Amount paid")
 
     class Meta:
         ordering = ["round__Order"]

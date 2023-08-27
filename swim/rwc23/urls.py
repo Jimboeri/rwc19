@@ -20,11 +20,14 @@ urlpatterns = [
 
     # Admin functions
     path('admin/general/', views.adminGeneral, name='adminGeneral'),
+    path('admin/users/', views.adminUsers, name='adminUsers'),
+    path('admin/user/detail/<int:player_id>', views.adminUserDetail, name='adminUserDetail'),
+    path('admin/user/payment/<int:player_id>', views.adminUserPayment, name='adminUserPayment'),
 
     # User management URL's    
     path("logout/", views.logout, name="logout"),
     path("login/", views.login, name="login"),
-        path("signup/", views.signup, name="signup"),
+    path("signup/", views.signup, name="signup"),
     path(
         "activate/(<uidb64>[0-9A-Za-z_\-]+)/(<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/",
         views.activate_account,
