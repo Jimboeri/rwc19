@@ -13,7 +13,7 @@ This page displays the game information and the player predictions for the game.
   <div id="node-header"><h3>Points information</h3></div>
     <div id="node_detail" class="content_block">
       <div id="node_det_table">
-        <table>
+        <table class="table-borderless">
           <tr>
             <td>Player</td>
             <td>{{ prediction.playerRound.player.first_name|title }} {{ prediction.playerRound.player.last_name|title }}</td>
@@ -26,72 +26,83 @@ This page displays the game information and the player predictions for the game.
             <td>Date</td>
             <td>{{ prediction.game.gamedate }}</td>
           </tr>
-          <tr>
-            {% if prediction.game.finished %}
-              <td>Game has finished</td>
-            {% else %}
-              <td></td>
-            {% endif %}
-          </tr>
-        </table>
-        <table id="mypredictions">
-          <tr>
-            <th>Game</th>
-          </tr>
-
-          <tr>
-            <td>{{ game_res }}</td>
-            <td>{{ player_choice }}</td>
-            {% if prediction.result %}
-              <td>Points calcluated below</td>
-            {% else %}
-              {% if prediction.nopredictions %}
-                <td>No predictions entered, gets game average</td>
-              {% else %}
-                <td>Wrong result, gets worst of scores from players who got it right</td>
-              {% endif %}
-            {% endif %}
-          </tr>
-
-          <tr>
-              <td>Game spread: {{ gameSpread }}</td>
-              <td>Player spread: {{ mySpread }}</td>
+          {% if prediction.game.finished %}
+            <tr>
+              <td>Score: </td>
+              <td>{{ prediction.game.Team1 }} {{ prediction.game.score1 }}:{{ prediction.game.score2 }} {{ prediction.game.Team2 }}</td>
             </tr>
-                         
+            <tr>    
+              <td>Game has finished</td>
+              <td>{{ prediction.game.resText }}</td>
+            </tr>
+          {% endif %}
+          
         </table>
+
         <h2>Points calculation</h2>
+        <table  id="mypredictions" class="table-borderless">
+          <tr>
+            <td>Player prediction</td>
+            <td>{{ prediction.resText }}</td>
+          
+            {% if prediction.game.result == prediction.result %}
+              <tr>
+                <td>Points for correct result</td>
+                <td class="boldItalic">{{ prediction.calcScore }}</td>
+              </tr>
+              {% if prediction.game.result == 3 %}
+                <tr>
+                  <td>Points for draw</td>
+                  <td class="boldItalic">25</td>
+                </tr>
+              {% else %}
+                <tr>
+                  <td>Spread in the game</td>
+                  <td>{{ prediction.game.spread }}</td>
+                </tr>
+                <tr>
+                  <td>Players predicted spread</td>
+                  <td>{{ prediction.spread }}</td>
+                </tr>
+                <tr>
+                  <td>Difference between spreads</td>
+                  <td>{{ prediction.spreadDiff }}</td>
+                </tr>
+
+                <tr>
+                    <td>Points calculation</td>
+                </tr>
+                  <tr>
+                    <th>Difference</th>
+                    <th>Points</th>
+                </tr>
+                    <tr><td>0</td><td>20</td>
+                </tr>
+                <tr><td>1</td><td>19</td></tr>
+                <tr><td>2</td><td>18</td></tr>
+                <tr><td>3</td><td>17</td></tr>
+                <tr><td>4</td><td>16</td></tr>
+                <tr><td>5</td><td>15</td></tr>
+                <tr><td>6</td><td>14</td></tr>
+                <tr><td>7</td><td>13</td></tr>
+                <tr><td>8</td><td>12</td></tr>
+                <tr><td>9</td><td>11</td></tr>
+                <tr><td>10</td><td>10</td></tr>
+                <tr><td>11</td><td>9</td></tr>
+                <tr><td>12</td><td>8</td></tr>
+                <tr><td>13</td><td>7</td></tr>
+                <tr><td>14</td><td>6</td></tr>
+                <tr><td>15 or more</td><td>5</td></tr>
+              {% endif %}
+            {% else %}
+              <tr>
+                <td>Incorrect result predicted</td>
+                <td><b>0</b></td>
+              </tr>
+            {% endif %}
           
 
-              <table  id="mypredictions">
-              {% if prediction.result %}
-                <tr>
-                  <td>Half the difference to the winners score:</td>
-                  <td>{{ win_diff }}</td>
-                </tr>
-                <tr>
-                  <td>Spread differential:</td>
-                  <td>{{ spread }}</td>
-                </tr>
-                <tr>
-                  <td>Bonus for getting the winning teams score:</td>
-                  <td>{{ nBonus }}</td>
-                </tr>
-                {% else %}
-                  {% if prediction.nopredictions %}
-                    <tr>
-                      <td>No selection, gets game average:</td>
-                      <td>{{ prediction.game.average }}</td>
-                    </tr>
-                  {% else %}
-                  <tr>
-                      <td>Wrong result, gets worst score of correct predictions:</td>
-                      <td>{{ prediction.game.high_point }}</td>
-                    </tr>
-                  {% endif %}
-                {% endif %}
-            
-
-          </table>
+        </table>
         <span id="node_cancel_button" class="cancel_button">
           <a href="{% url 'rwc23:about' %}" class="btn btn-link btn-outline-warning" role="button">Rules and scoring system</a>
         </span>

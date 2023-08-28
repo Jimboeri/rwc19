@@ -87,6 +87,24 @@ class Game(models.Model):
         self.resultText = resText
         self.save()
         return resText
+    
+    def result(self):
+        if self.finished:
+            if self.score1 > self.score2:
+                res = 1
+            elif self.score1 < self.score2:
+                res = 2
+            else:
+                res = 3
+        else:
+            res = 0
+        return res
+    
+    def spread(self):
+        if self.finished:
+            return abs(self.score1 - self.score2)
+        else:
+            return 0
 
 class PlayerRound(models.Model):
     player = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -170,7 +188,7 @@ class Prediction(models.Model):
             self.points = points
             self.save()
 
-        return()
+        return(self.points)
 
     def resText(self):
         resText = ""
@@ -184,3 +202,9 @@ class Prediction(models.Model):
             resText = "No selection"
 
         return resText
+    
+    def spreadDiff(self):
+        if self.game.finished:
+            return abs(self.spread - abs(self.game.score1 - self.game.score2))
+        else:
+            return 0
