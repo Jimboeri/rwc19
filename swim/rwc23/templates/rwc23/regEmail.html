@@ -1,0 +1,19 @@
+{% extends "rwc23/base.html" %}
+
+{% block pagerefresh %}<meta http-equiv="refresh" content="30">{% endblock %}
+
+{% block title %}
+Openwater swimmers RWC 2023 competition
+{% endblock %}
+
+{% block web-body %}
+
+<div id="reg">
+<h1>Registration</h1>
+<p>Thanks for registering.</p>
+<p>The next step is to check your email. The system will have emailed you an activation link.</p>
+<p>Click on the link to activate your account.</p>
+<p>Once you have activated your account you will be able to use the <a href="{% url 'rwc23:login' %}">login</a> link at the top right of the page and enter the competition.</p>
+</div>
+ 
+{% endblock %}

@@ -86,9 +86,9 @@ def currRound(request):  # RWC23 OK
             rnd.save()
 
     currRound = Round.objects.filter(status="C").first()
-    currPlayerRound = PlayerRound.objects.filter(
+    currPlayerRound, create = PlayerRound.objects.get_or_create(
         player=request.user, round=currRound
-    ).first()
+    )
     # ensure all games have a prediction
     for g in currRound.game_set.all():
         Prediction.objects.get_or_create(playerRound=currPlayerRound, game=g)
@@ -386,20 +386,23 @@ def adminUserDetail(request, player_id):  # RWC23 OK
         userForm = adminUserForm(request.POST, instance=player)
         profileForm = adminProfileForm(request.POST, instance=profile)
 
-        if userForm.is_valid() and profileForm.is_valid(): # and fRounds.is_valid():
+        if userForm.is_valid() and profileForm.is_valid():  # and fRounds.is_valid():
             userForm.save()
             profileForm.save()
 
             return HttpResponseRedirect(reverse("rwc23:adminUsers"))
         else:
-            logging.debug(f"Invalid response userForm: {userForm.is_valid()} profileForm: {profileForm.is_valid()}")
- 
+            logging.debug(
+                f"Invalid response userForm: {userForm.is_valid()} profileForm: {profileForm.is_valid()}"
+            )
+
     # if a GET (or any other method) we'll create a blank form
     else:
         userForm = adminUserForm(instance=player)
         profileForm = adminProfileForm(instance=profile)
     context = {"player": player, "userForm": userForm, "profileForm": profileForm}
     return render(request, "rwc23/adminPlayerDets.html", context)
+
 
 @login_required
 def adminUserPayment(request, player_id):  # RWC23 OK
@@ -410,10 +413,12 @@ def adminUserPayment(request, player_id):  # RWC23 OK
         return HttpResponseRedirect(reverse("rwc23:index"))
 
     player = get_object_or_404(User, id=player_id)
- 
-    #RoundFormSet = modelformset_factory(PlayerRound, form=adminPlayerRoundForm, extra=0)
-    RoundFormSet = modelformset_factory(PlayerRound, fields=['paid', 'paidAmount'], extra=0)
-    rndQuerySet=PlayerRound.objects.filter(player=player)
+
+    # RoundFormSet = modelformset_factory(PlayerRound, form=adminPlayerRoundForm, extra=0)
+    RoundFormSet = modelformset_factory(
+        PlayerRound, fields=["paid", "paidAmount"], extra=0
+    )
+    rndQuerySet = PlayerRound.objects.filter(player=player)
 
     logging.debug(f"Number of rounds {len(rndQuerySet)}")
 
@@ -423,7 +428,7 @@ def adminUserPayment(request, player_id):  # RWC23 OK
         if fRounds.is_valid():
             fRounds.save()
             return HttpResponseRedirect(reverse("rwc23:adminUsers"))
-        
+
         else:
             logging.debug(f"Invalid response userForm: {fRounds.is_valid()}")
 
@@ -432,7 +437,6 @@ def adminUserPayment(request, player_id):  # RWC23 OK
         fRounds = RoundFormSet(queryset=rndQuerySet)
     context = {"player": player, "formset": fRounds}
     return render(request, "rwc23/adminPlayerPayment.html", context)
-
 
 
 def login(request):  # checked for rwc23
@@ -460,6 +464,10 @@ def logout(request):  # checked for rwc23
     return render(request, "accounts/logout.html")
 
 
+def regEmail(request):  # checked for rwc23
+    return render(request, "rwc23/regEmail.html")
+
+
 def signup(request):  # checked for rwc23
     if request.user.is_authenticated:
         return redirect("rwc23:index")
@@ -471,7 +479,7 @@ def signup(request):  # checked for rwc23
             messages.success(
                 request, "Account created successfully, please check your email"
             )
-            return redirect("rwc23:login")
+            return redirect("rwc23:regEmail")
 
     else:
         f = CustomUserCreationForm()

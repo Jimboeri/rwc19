@@ -28,6 +28,7 @@ urlpatterns = [
     path("logout/", views.logout, name="logout"),
     path("login/", views.login, name="login"),
     path("signup/", views.signup, name="signup"),
+    path("regemail/", views.regEmail, name="regEmail"),
     path(
         "activate/(<uidb64>[0-9A-Za-z_\-]+)/(<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/",
         views.activate_account,

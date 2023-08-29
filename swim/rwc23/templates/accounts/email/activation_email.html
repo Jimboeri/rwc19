@@ -6,7 +6,7 @@ Activation confirmation
 
 {% block email-body %}
 
-  <p>Hello!</p>
+  <p>Hello {{ user.first_name|capfirst }}!</p>
 
   <h1>Confirm your email address</h1>
 
