@@ -116,6 +116,7 @@ class CustomUserCreationForm(forms.Form):
             'token': default_token_generator.make_token(user),
             'email': user.email,
             'base_url': eWeb_Base_URL,
+            'user': user,
         }
 
         subject = render_to_string(
@@ -129,7 +130,8 @@ class CustomUserCreationForm(forms.Form):
         #                     body=email, html=html_msg)
         #msg.save()
 
-        send_mail(subject, email, settings.DEFAULT_FROM_EMAIL, [user.email])
+        #send_mail(subject, email, settings.DEFAULT_FROM_EMAIL, [user.email])
+        send_mail(subject, email, settings.DEFAULT_FROM_EMAIL, [user.email], html_message=html_msg)
 
         return user
 
