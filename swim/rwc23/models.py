@@ -72,7 +72,7 @@ class Game(models.Model):
         ordering = ["Round", "gamedate"]
 
     def __str__(self):
-        return(f"{self.Team1} v {self.Team2} ({self.Round.Name})")
+        return(f"{self.Team1} v {self.Team2}")
     
     def resText(self):
         if self.finished:
@@ -193,9 +193,9 @@ class Prediction(models.Model):
     def resText(self):
         resText = ""
         if self.result == 1:
-            resText = f"{self.game.Team1.teamID} win by {self.spread}"
+            resText = f"{self.game.Team1.teamID} by {self.spread}"
         elif self.result == 2:
-            resText = f"{self.game.Team2.teamID} win by {self.spread}"
+            resText = f"{self.game.Team2.teamID} by {self.spread}"
         elif self.result == 3:
             resText = "Draw"
         else:

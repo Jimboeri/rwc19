@@ -15,7 +15,7 @@ This page displays the game information and the player picks for the game.
       <div id="node_det_table">
         {% if user.is_staff %}
           <span id="node_cancel_button" class="cancel_button">
-            <a href="{% url 'rwc23:gameEdit' game.id %}" class="btn btn-link btn-outline-warning" role="button">Edit player picks</a>
+            <a href="{% url 'rwc23:gameEdit' game.id %}" class="btn btn-link btn-outline-warning" role="button">Edit game details and player picks</a>
           </span>
         {% endif %}
         {% if user.username == 'jim' %}

@@ -32,10 +32,10 @@
     <div class="container-fluid">
       <div id="logged_in">
         {% if user.is_authenticated %}
-          Hi {{ user.first_name|capfirst }} {{ user.last_name|capfirst }} <a href="{% url 'rwc23:logout' %}">logout</a>
+          Hi {{ user.first_name|capfirst }} {{ user.last_name|capfirst }} <a href="{% url 'rwc23:logout' %}" class="pointsLinkDark">Logout</a>
         {% else %}
-          <a href="{% url 'rwc23:login' %}">Login</a><br>
-          <a href="{% url 'rwc23:signup' %}">Register</a>
+          <a href="{% url 'rwc23:login' %}" class="pointsLinkDark">Login</a><br>
+          <a href="{% url 'rwc23:signup' %}" class="pointsLinkDark">Register</a>
         {% endif %}
       </div>
       <div id="pg_header">

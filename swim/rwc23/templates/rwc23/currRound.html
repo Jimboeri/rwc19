@@ -15,18 +15,17 @@ Openwater swimmers RWC 2023 competition
       <table id="mypicks">
         <tr>
           <th>Game</th>
-          <th> </th>
-          <th>Result</th>
-          <th>Your selection</th>
+          <th>Score</th>
+          <th>Selection</th>
           <th>Points</th>
         </tr>
       {% for pick in currPredictions %}
         <tr>
           <td><a href="{% url 'rwc23:gameView' pick.game.id %}">{{ pick.game }}</a></td>
           {% if pick.game.finished %}
-            <td>Finished</td><td>{{ pick.game.score1}} : {{ pick.game.score2}}</td>
+            <td>{{ pick.game.score1}} : {{ pick.game.score2}}</td>
           {% else %}
-            <td></td><td></td>
+            <td></td>
           {% endif %}
           <td>
             {% if pick.result == 0 %}
@@ -65,7 +64,7 @@ Openwater swimmers RWC 2023 competition
     
     {% for player in playerList%}
     <tr>
-       <td><a href="{% url 'rwc23:playerDets' player.player.id %}">{{ player.player.first_name|title }}</a></td>
+       <td><a href="{% url 'rwc23:playerDets' player.player.id %}" class="pointsLinkDark">{{ player.player.first_name|title }} {{ player.player.last_name|title }}</a></td>
        <td>{{ player.totalPoints|floatformat }}</td>
     </tr>
     {% endfor %}

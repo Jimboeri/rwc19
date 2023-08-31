@@ -16,7 +16,7 @@ p {
   font-size: 0.875em;
 }
 
- .rwc_background{
+.rwc_background{
   background-color: lightblue;
 }
 
@@ -67,19 +67,7 @@ p {
 .action_button{
   float: right;
 }
-
-.nodeDownLink{
-  color: red;
-}
-
-.battWarning{
-  color: orange;
-}
-
-.battCritical{
-  color: orangered;
-}
-
+             
 .yellow{
   color: yellow
 }

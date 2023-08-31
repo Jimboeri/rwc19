@@ -12,7 +12,7 @@ Openwater swimmers RWC 2023 competition
 <h1>Rounds</h1>
 {% for round in rounds %}
   <div class="round">
-    <a href="{% url 'rwc23:dispRound' user.id round.id %}">{{ round.Name }}</a>
+    <a href="{% url 'rwc23:dispRound' user.id round.id %}" class="pointsLinkDark">{{ round.Name }}</a>
   </div>
 {% endfor %}
 </div>
