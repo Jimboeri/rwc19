@@ -350,6 +350,8 @@ def adminUsers(request):  # checked for rwc23
 
     # function processed players and generates playerRound records
     players = User.objects.all().order_by("first_name")
+    for pl in players:
+        pl.RWC23_user.makeRounds()
 
     context = {"players": players}
     return render(request, "rwc23/adminUsers.html", context)

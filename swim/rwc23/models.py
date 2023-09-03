@@ -18,6 +18,18 @@ class Profile(models.Model):
     
     def __str__(self):
         return self.user.username
+    
+    def makeRounds(self):
+        """
+        Create a PlayerRound for each round
+        """
+        rList = Round.objects.all()
+        for r in rList:
+            pr, created = PlayerRound.objects.get_or_create(player=self.user, round=r)
+            pr.makePreds()
+            pr.save()
+        
+        return
 
 
 @receiver(post_save, sender=User)
@@ -27,7 +39,8 @@ def create_user_profile(sender, instance, created, **kwargs):
 
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
-	instance.profile.save()
+	#instance.RWC23_user.save()
+    instance.profile.save()
 
 class Team(models.Model):
     teamID = models.CharField(max_length=30)
