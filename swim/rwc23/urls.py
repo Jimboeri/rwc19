@@ -23,6 +23,7 @@ urlpatterns = [
     path('admin/users/', views.adminUsers, name='adminUsers'),
     path('admin/user/detail/<int:player_id>', views.adminUserDetail, name='adminUserDetail'),
     path('admin/user/payment/<int:player_id>', views.adminUserPayment, name='adminUserPayment'),
+    path('admin/user/fullpayment/<int:player_id>', views.adminUserFullPayment, name='adminUserFullPayment'),
 
     # User management URL's    
     path("logout/", views.logout, name="logout"),

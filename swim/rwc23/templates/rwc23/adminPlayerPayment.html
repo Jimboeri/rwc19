@@ -11,6 +11,7 @@ Admin of player {{ player.first_name|title}} {{ player.last_name|title }}
 <div class="rwc_background">
   <div id="player-header"><h3>Player info: <b>{{ player.first_name|title}} {{ player.last_name|title }}</b></h3></div>
     <div id="player_detail" class="content_block">
+      <a href="{% url 'rwc23:adminUserFullPayment' player.id %}" class="btn btn-success" role="button">Mark player fully paid</a>
       <div id="node_det_table">
         <form action="{% url 'rwc23:adminUserPayment' player.id %}" method="POST">
           {% csrf_token %}

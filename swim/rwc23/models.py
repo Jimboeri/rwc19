@@ -48,6 +48,7 @@ class Round(models.Model):
     started = models.BooleanField(default=False)
     finished = models.BooleanField(default=False)
     status = models.CharField(max_length=1, default="N")
+    entryFee = models.FloatField(default=5, help_text="Entry fee for round")
 
     class Meta:
         ordering = ["Order"]
@@ -62,7 +63,6 @@ class Game(models.Model):
     gamedate = models.DateTimeField(blank=True, null=True)
     score1 = models.IntegerField(default=0, help_text="Score of 1st team", validators=[MinValueValidator(0,'Negative scores not allowed!')])
     score2 = models.IntegerField(default=0, help_text="Score of 2nd team", validators=[MinValueValidator(0,'Negative scores not allowed!')])
-    started = models.BooleanField(default=False)
     finished = models.BooleanField(default=False)
     high_point = models.FloatField(default=0, )
     average = models.DecimalField(default=0, max_digits=5, decimal_places=1)
@@ -105,6 +105,9 @@ class Game(models.Model):
             return abs(self.score1 - self.score2)
         else:
             return 0
+        
+    def started(self):
+        return self.gamedate < timezone.now()
 
 class PlayerRound(models.Model):
     player = models.ForeignKey(User, on_delete=models.CASCADE)

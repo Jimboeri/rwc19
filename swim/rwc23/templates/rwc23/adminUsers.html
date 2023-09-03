@@ -11,6 +11,11 @@ Openwater swimmers RWC 2023 competition - User admin
     <table class="table-sm">
       {% for player in players%}
       <tr>
+        <td>
+          {% if player.RWC23_user.FullyPaid %}
+            <span class="badge badge-success">Fully paid</span>
+          {% endif %}
+        </td>
         <td>{{ player.first_name|title }} {{ player.last_name|title }}</td>
         <td><a href="{% url 'rwc23:adminUserPayment' player.id %}" class="btn btn-info" role="button">Payments</a></td>
         <td><a href="{% url 'rwc23:adminUserDetail' player.id %}" class="btn btn-info" role="button">Name & Contacts</a></td>

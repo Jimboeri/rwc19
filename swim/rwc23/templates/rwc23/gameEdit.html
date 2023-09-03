@@ -14,27 +14,28 @@ Game Edit
           {{ formset.management_form }}
           {{ gForm.non_field_errors}}
           {{ gForm.instance.Team1 }} v {{ gForm.instance.Team2 }}
-           <table>
-
-            <tr>
-                <td>Date</td>
-                <td>{{ gForm.instance.gamedate }}</td>
-              </tr>
- 
+          {% if gForm.instance.started %}
+            <table>
               <tr>
-                <td>{{ gForm.instance.Team1 }} score</td>
-                <td>{{ gForm.score1 }}</td>
-              </tr>
-              <tr>
-                <td>{{ gForm.instance.Team2 }} score</td>
-                <td>{{ gForm.score2 }}</td>
-              </tr>
-              <tr>
-                <td>Finished</td>
-                <td>{{ gForm.finished }}</td>
-              </tr>    
-         
-          </table>
+                  <td>Date</td>
+                  <td>{{ gForm.instance.gamedate }}</td>
+                </tr>
+  
+                <tr>
+                  <td>{{ gForm.instance.Team1 }} score</td>
+                  <td>{{ gForm.score1 }}</td>
+                </tr>
+                <tr>
+                  <td>{{ gForm.instance.Team2 }} score</td>
+                  <td>{{ gForm.score2 }}</td>
+                </tr>
+                <tr>
+                  <td>Finished</td>
+                  <td>{{ gForm.finished }}</td>
+                </tr>    
+          
+            </table>
+          {% endif %}
           <h2>Update player picks</h2>
           <table class='formtable'>
             <tr class='formtable'>

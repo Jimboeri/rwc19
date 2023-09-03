@@ -226,15 +226,10 @@ def gameEdit(request, game_id):  # RWC23 OK
                 "points", "playerRound__player__username"
             ),
         )
-        highPoint = 0
-        pTot = 0.0
-        pNum = 0
-        # print("BP1")
+
         if gForm.is_valid():
-            # print("BP2")
             gForm.save()
             if fPicks.is_valid():
-                # print("Valid picks")
                 fPicks.save()
             else:
                 logging.info(fPicks.errors)
@@ -242,14 +237,11 @@ def gameEdit(request, game_id):  # RWC23 OK
 
             if game.finished:
                 game.resText()
-                for (
-                    p
-                ) in (
-                    pList
-                ):  # first pass works out scores for those with the right result
+                for p in pList:  # update scores
                     if not p.override:
                         p.calcScore()
                         p.save()
+                        p.playerRound.totPoints()
 
             return HttpResponseRedirect(reverse("rwc23:gameView", args=(game.id,)))
         else:
@@ -320,14 +312,6 @@ def email_results(request, game_id):
             email_server = smtplib.SMTP_SSL(eSmtp_host, int(eSmtp_port))
             email_server.login(eSmtp_user, eSmtp_password)
 
-            # msg = MIMEText(jPayload['Body'], 'html')
-            # msg['From'] = jPayload['From']
-            # msg['To'] = jPayload['To']
-            # msg['Subject'] = jPayload['Subject']
-
-            # email_server.sendmail(jPayload['From'], jPayload['To'], msg.as_string())
-            # email_server.close()
-            # print("email sent")
         except Exception as e:
             print(e)
             print("Houston, we have an email error {}".format(e))
@@ -427,6 +411,14 @@ def adminUserPayment(request, player_id):  # RWC23 OK
 
         if fRounds.is_valid():
             fRounds.save()
+
+            for pr in rndQuerySet:
+                if not pr.paid:
+                    pr.paidAmount = 0
+                    pr.save()
+                    pr.player.RWC23_user.FullyPaid = False # reset fully paid flag
+                    pr.player.RWC23_user.save()
+
             return HttpResponseRedirect(reverse("rwc23:adminUsers"))
 
         else:
@@ -438,6 +430,18 @@ def adminUserPayment(request, player_id):  # RWC23 OK
     context = {"player": player, "formset": fRounds}
     return render(request, "rwc23/adminPlayerPayment.html", context)
 
+def adminUserFullPayment(request, player_id):  # RWC23 OK
+    if not request.user.is_superuser:
+        return HttpResponseRedirect(reverse("rwc23:index"))
+
+    player = get_object_or_404(User, id=player_id)
+    player.RWC23_user.FullyPaid = True
+    player.RWC23_user.save()
+    for pr in PlayerRound.objects.filter(player=player).all():
+        pr.paid = True
+        pr.paidAmount = pr.round.entryFee
+        pr.save()
+    return HttpResponseRedirect(reverse("rwc23:adminUsers"))
 
 def login(request):  # checked for rwc23
     if request.user.is_authenticated:
