@@ -162,6 +162,10 @@ def makePicks(request, rnd_id):  # RWC23 OK
         # print(len(fPicks))
         if fPicks.is_valid():
             fPicks.save()
+            for pick in querySet:
+                if pick.result == 3:
+                    pick.spread = 0
+                    pick.save()
             return HttpResponseRedirect(
                 reverse("rwc23:dispRound", args=(request.user.id, rnd_id))
             )
