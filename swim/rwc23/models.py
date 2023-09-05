@@ -46,6 +46,7 @@ class Team(models.Model):
     teamID = models.CharField(max_length=30)
     descr = models.TextField(blank=True, null=True)
     pool = models.CharField(max_length=1, blank=True, null=True)
+    code = models.CharField(max_length=3, default="   ")
 
     class Meta:
         ordering = ["teamID"]
