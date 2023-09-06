@@ -33,6 +33,14 @@ p {
   color: blue;   
 }
 
+.showItem {
+  display: inline;
+}
+
+.hideItem {
+  display: none;
+}
+
 /*
 .payload {
   color: #0b772f; /*medium green */
