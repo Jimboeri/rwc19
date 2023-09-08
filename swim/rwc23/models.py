@@ -88,6 +88,9 @@ class Game(models.Model):
     def __str__(self):
         return(f"{self.Team1} v {self.Team2}")
     
+    def shortName(self):
+        return(f"{self.Team1.code} v {self.Team2.code}")
+    
     def resText(self):
         if self.finished:
             if self.score1 > self.score2:

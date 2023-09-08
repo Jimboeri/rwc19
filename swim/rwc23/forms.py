@@ -29,12 +29,15 @@ class PickDetailForm(forms.ModelForm):
         fields = ['spread', 'result']
         widgets = {
             'spread': forms.TextInput(attrs={'size': 3}),
+            "result": forms.Select(attrs={'onchange': "resultCheck()"}),
         }
 
     def __init__(self, *args, **kwargs):
         super(PickDetailForm, self).__init__(*args, **kwargs)
         #logging.debug(f"PickDetailForm instance: {self.instance}")
-        self.fields['result'] = forms.ChoiceField(choices=gameResult(self.instance.game))
+        self.fields['result'] = forms.ChoiceField(choices=gameResult(self.instance.game),
+                                                  widget=forms.Select(attrs={'onchange': "resultCheck( this )"}), 
+            )
 
 
 class PickAdminDetailForm(forms.ModelForm):

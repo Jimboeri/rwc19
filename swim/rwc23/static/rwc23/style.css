@@ -111,6 +111,25 @@ td.formtable {
   text-align: center;
 }
 
+/* Mainly a none class, just to pick up in javascript */
+.formLongName {
+  text-align: center;
+}
+
+.formResult {
+
+}
+
+.hideItem {
+  /*text-align: center;*/
+  display: none;
+}
+
+.showItem {
+  /*text-align: center;*/
+  display: inline;
+}
+
 a.pointsLink {
   color: yellow;
 }

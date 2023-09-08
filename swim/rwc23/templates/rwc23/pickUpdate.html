@@ -19,9 +19,13 @@ Make your picks
           <table class='formtable'>
             {% for form in formset %}
               <tr>
-                <td class='formtable'>{{ form.instance.game }}</td>
-                <td class='formtable'>{{ form.result }}</td>
-                <td class='formtable'>{{ form.spread }}</td>               
+                <td class='formtable formLongName'>{{ form.instance.game }}</td>
+                <td class='formtable formResult'>{{ form.result }}</td>
+                {% if form.instance.result == 3 %}
+                  <td class='hideItem'>{{ form.spread }}</td>
+                {% else %}
+                  <td class='showItem'>{{ form.spread }}</td>
+                {% endif %}               
                 <td>{{ form.id }}</td>
               </tr>
               {% endfor %}
@@ -58,4 +62,8 @@ Make your picks
   </div>
 
 </div>
+<script>
+console.log(window.innerWidth);
+</script>
+
 {% endblock %}

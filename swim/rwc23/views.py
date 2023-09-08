@@ -139,7 +139,7 @@ def makePicks(request, rnd_id):  # RWC23 OK
     logging.debug(f"PlayerRound = {currPlayerRound}")
     pastPreds = (
         Prediction.objects.filter(playerRound=currPlayerRound)
-        .filter(game__finished=True)
+        .filter(game__gamedate__lt = timezone.now() )
         .order_by("game__gamedate")
     )
 
@@ -147,7 +147,7 @@ def makePicks(request, rnd_id):  # RWC23 OK
 
     querySet = (
         Prediction.objects.filter(playerRound=currPlayerRound)
-        .exclude(game__finished=True)
+        .exclude(game__gamedate__lt = timezone.now())
         .order_by("game__gamedate")
     )
 
