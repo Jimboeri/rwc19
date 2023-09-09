@@ -42,18 +42,18 @@ Game Edit
               <th></th>
               <th class='formtable'>{{ gForm.instance.Team1 }} </th>
               <th class='formtable'>{{ gForm.instance.Team2 }} </th>
-              <th class='formtable'>Over ride</th>
               <th class='formtable'>Points</th>
             </tr>
             {% for form in formset %}
-              <tr>
-                <td class='formtable'>{{ form.instance.playerRound.player.first_name|title}} {{ form.instance.playerRound.player.last_name|title}}</td>
-                <td class='formtable'>{{ form.result }}</td>
-                <td class='formtable'>{{ form.spread }}</td>               
-                <td class='formtable'>{{ form.override }}</td>
-                <td class='formtable'>{{ form.points }}</td>
-                <td>{{ form.id }}</td>
-              </tr>
+            <tr>
+              <td class='formtable formLongName'>{{ form.instance.playerRound.player.first_name|title}} {{ form.instance.playerRound.player.last_name|title}}</td>
+              <td class='formtable formResult'>{{ form.result }}</td>
+              {% if form.instance.result == 3 %}
+                <td class='hideItem'>{{ form.spread }}</td>
+              {% else %}
+                <td class='showItem'>{{ form.spread }}</td>
+              {% endif %}               
+              <td>{{ form.id }}</td>
               {% endfor %}
             </table>
         <input type="submit" value="Submit">

@@ -96,7 +96,7 @@ def currRound(request):  # RWC23 OK
     currPlayerRound.totPoints()
     cPred = Prediction.objects.filter(playerRound=currPlayerRound).all()
 
-    playerList = PlayerRound.objects.order_by("totalPoints").filter(round=currRound)
+    playerList = PlayerRound.objects.order_by("-totalPoints", "player__first_name").filter(round=currRound)
     context = {"playerList": playerList}
     context["currRound"] = currRound
     context["currPredictions"] = cPred
@@ -117,7 +117,7 @@ def dispRound(request, player_id, round_id):  # RWC23 OK
     )
     playerRound.totPoints()
 
-    playerList = PlayerRound.objects.order_by("totalPoints").filter(round=cRound)
+    playerList = PlayerRound.objects.order_by("-totalPoints, player__first_name").filter(round=cRound)
     context = {"playerList": playerList}
     context["currRound"] = cRound
     context["currPredictions"] = Prediction.objects.filter(
