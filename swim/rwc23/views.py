@@ -197,7 +197,7 @@ def gameEdit(request, game_id):  # RWC23 OK
     """
     Screen to allow game updates - scores etc
     Also to allow admin to override results
-    Must only be avail;able to staff
+    Must only be available to staff
     """
     game = get_object_or_404(Game, id=game_id)
 
@@ -235,6 +235,10 @@ def gameEdit(request, game_id):  # RWC23 OK
             gForm.save()
             if fPicks.is_valid():
                 fPicks.save()
+                for pick in Prediction.objects.filter(game=game):
+                    if pick.result == 3:
+                        pick.spread = 0
+                        pick.save()
             else:
                 logging.info(fPicks.errors)
             pList = Prediction.objects.filter(game=game)

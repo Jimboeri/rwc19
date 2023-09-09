@@ -49,7 +49,9 @@ class PickAdminDetailForm(forms.ModelForm):
         }
     def __init__(self, *args, **kwargs):
         super(PickAdminDetailForm, self).__init__(*args, **kwargs)
-        self.fields['result'] = forms.ChoiceField(choices=gameResult(self.instance.game), help_text="xxx",)
+        self.fields['result'] = forms.ChoiceField(choices=gameResult(self.instance.game), 
+                        widget=forms.Select(attrs={'onchange': "resultCheck( this )"}),
+                        help_text="xxx",)
 
 
 class gameForm(forms.ModelForm):
