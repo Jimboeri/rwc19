@@ -353,7 +353,7 @@ def adminUsers(request):  # checked for rwc23
     """
     Show list of all players for management & payment processing
     """
-    if not request.user.is_superuser:
+    if not request.user.is_staff:
         return HttpResponseRedirect(reverse("rwc23:index"))
 
     # function processed players and generates playerRound records
@@ -370,7 +370,7 @@ def adminUserDetail(request, player_id):  # RWC23 OK
     """
     Page to manage admin details of a user
     """
-    if not request.user.is_superuser:
+    if not request.user.is_staff:
         return HttpResponseRedirect(reverse("rwc23:index"))
 
     player = get_object_or_404(User, id=player_id)
@@ -403,7 +403,7 @@ def adminUserPayment(request, player_id):  # RWC23 OK
     """
     Page to manage payment details of a user
     """
-    if not request.user.is_superuser:
+    if not request.user.is_staff:
         return HttpResponseRedirect(reverse("rwc23:index"))
 
     player = get_object_or_404(User, id=player_id)
@@ -441,7 +441,7 @@ def adminUserPayment(request, player_id):  # RWC23 OK
     return render(request, "rwc23/adminPlayerPayment.html", context)
 
 def adminUserFullPayment(request, player_id):  # RWC23 OK
-    if not request.user.is_superuser:
+    if not request.user.is_staff:
         return HttpResponseRedirect(reverse("rwc23:index"))
 
     player = get_object_or_404(User, id=player_id)
