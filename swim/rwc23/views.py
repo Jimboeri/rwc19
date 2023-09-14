@@ -421,13 +421,16 @@ def adminUserPayment(request, player_id):  # RWC23 OK
 
         if fRounds.is_valid():
             fRounds.save()
-
+            lFullPay = True
             for pr in rndQuerySet:
-                if not pr.paid:
-                    pr.paidAmount = 0
-                    pr.save()
-                    pr.player.RWC23_user.FullyPaid = False # reset fully paid flag
-                    pr.player.RWC23_user.save()
+                if pr.paidAmount >= pr.round.entryFee:
+                    pr.paid = True
+                else:  
+                    pr.paid = False
+                    lFullPay = False
+                pr.save()
+            pr.player.RWC23_user.FullyPaid = lFullPay # reset fully paid flag
+            pr.player.RWC23_user.save()
 
             return HttpResponseRedirect(reverse("rwc23:adminUsers"))
 
