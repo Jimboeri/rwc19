@@ -1,4 +1,4 @@
-FROM python:3.11.0-slim
+FROM python:slim-bookworm
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 RUN mkdir code
