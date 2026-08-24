@@ -1,0 +1,8 @@
+{
+    "chat.tools.terminal.autoApprove": {
+        "true": true,
+        "docker run": true,
+        "docker manifest": true,
+        "printf": true
+    }
+}

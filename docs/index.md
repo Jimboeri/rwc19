@@ -6,5 +6,7 @@ This system provides a web based means of people putting in score forecasts and 
 
 ## Database
 
+[RWC23 application specification](rwc23-specification.md)
+
 ## Alerting
 Alert

@@ -1,2 +1,2 @@
-django
-psycopg2>=2.7,<3.0
+Django==6.1
+psycopg[binary]==3.3.4

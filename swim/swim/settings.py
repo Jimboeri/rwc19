@@ -20,12 +20,14 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '%+0ne-h+^-7!kw84)qr^8-9#&*t#o5-z=59$q#1!-#a4ifacmo'
+SECRET_KEY = os.environ['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', '').lower() in ('1', 'true', 'yes')
 
-ALLOWED_HOSTS = ['.west.kiwi', 'localhost', '.west.net.nz', '192.168.3.9']
+ALLOWED_HOSTS = [host for host in os.environ.get(
+    'ALLOWED_HOSTS', 'localhost'
+).split(',') if host]
 
 
 # Application definition
@@ -84,10 +86,10 @@ WSGI_APPLICATION = 'swim.wsgi.application'
 #}
 DATABASES = {
 'default': {
-'ENGINE': 'django.db.backends.postgresql_psycopg2',
-'NAME': 'postgres',
-'USER': 'postgres',
-'PASSWORD': 'whatever[baby]',
+'ENGINE': 'django.db.backends.postgresql',
+'NAME': os.environ.get('DB_NAME', 'postgres'),
+'USER': os.environ.get('DB_USER', 'postgres'),
+'PASSWORD': os.environ.get('DB_PASSWORD', ''),
 'HOST': 'db',
 'PORT': 5432,
 }
@@ -145,7 +147,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'NZ'
+TIME_ZONE = 'Pacific/Auckland'
 
 USE_I18N = True
 
@@ -167,10 +169,24 @@ LOGIN_REDIRECT_URL = "rwc23:index"
 
 # Email settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_USE_TLS = True
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'auto@west.net.nz'
-EMAIL_HOST_PASSWORD = 'urcpgqoivufpxkbk'
+EMAIL_HOST = os.environ.get('EMAIL_HOST', 'smtp.gmail.com')
+EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS', '1').lower() in ('1', 'true', 'yes')
+EMAIL_PORT = int(os.environ.get('EMAIL_PORT', '587'))
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
 
-CSRF_TRUSTED_ORIGINS = ["https://*.west.net.nz", "http://localhost"]
+CSRF_TRUSTED_ORIGINS = [origin for origin in os.environ.get(
+    'CSRF_TRUSTED_ORIGINS', 'http://localhost'
+).split(',') if origin]
+
+SESSION_COOKIE_SECURE = not DEBUG
+CSRF_COOKIE_SECURE = not DEBUG
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_REFERRER_POLICY = 'same-origin'
+X_FRAME_OPTIONS = 'DENY'
+SECURE_SSL_REDIRECT = not DEBUG
+SECURE_HSTS_SECONDS = int(os.environ.get(
+    'SECURE_HSTS_SECONDS', '31536000' if not DEBUG else '0'
+))
+SECURE_HSTS_INCLUDE_SUBDOMAINS = not DEBUG
+SECURE_HSTS_PRELOAD = not DEBUG

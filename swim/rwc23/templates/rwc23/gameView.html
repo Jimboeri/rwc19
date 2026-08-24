@@ -19,9 +19,10 @@ This page displays the game information and the player picks for the game.
           </span>
         {% endif %}
         {% if user.username == 'jim' %}
-          <span id="node_cancel_button" class="cancel_button">
-            <a href="{% url 'rwc23:email_results' game.id %}" class="btn btn-link btn-outline-warning" role="button">Email results</a>
-          </span>
+          <form action="{% url 'rwc23:email_results' game.id %}" method="POST">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-link btn-outline-warning">Email results</button>
+          </form>
         {% endif %}
         <table>
           <tr>

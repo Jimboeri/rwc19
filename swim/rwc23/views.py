@@ -3,7 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User
 
 # from django.views import generic
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.urls import reverse
 import datetime
 from django.utils import timezone
@@ -28,6 +28,7 @@ from .forms import (
     adminPlayerRoundForm,
 )
 from django.forms import inlineformset_factory, modelformset_factory
+from django.views.decorators.http import require_POST
 
 # Create your views here.
 
@@ -193,6 +194,7 @@ def playerDets(request, player_id):
 
 
 @login_required
+@user_passes_test(lambda user: user.is_staff)
 def gameEdit(request, game_id):  # RWC23 OK
     """
     Screen to allow game updates - scores etc
@@ -301,6 +303,8 @@ def about(request):  # checked for rwc23
 
 
 @login_required
+@user_passes_test(lambda user: user.is_staff)
+@require_POST
 def email_results(request, game_id):
     game = get_object_or_404(Game, id=game_id)
     if game.finished:
@@ -335,6 +339,8 @@ def pointsView(request, pick_id):
     return render(request, "rwc23/pointsView.html", context)
 
 
+@login_required
+@user_passes_test(lambda user: user.is_staff)
 def adminGeneral(request):  # checked for rwc23
     # function processed players and generates playerRound records
     player = User.objects.all()
@@ -443,6 +449,9 @@ def adminUserPayment(request, player_id):  # RWC23 OK
     context = {"player": player, "formset": fRounds}
     return render(request, "rwc23/adminPlayerPayment.html", context)
 
+@login_required
+@user_passes_test(lambda user: user.is_staff)
+@require_POST
 def adminUserFullPayment(request, player_id):  # RWC23 OK
     if not request.user.is_staff:
         return HttpResponseRedirect(reverse("rwc23:index"))
