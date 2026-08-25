@@ -1,0 +1,11 @@
+{% extends "arena/email-base.html" %}
+
+{% block title %}Activation confirmation{% endblock %}
+
+{% block email-body %}
+  <p>Hello {{ user.first_name|capfirst }}!</p>
+  <h1>Confirm your email address</h1>
+  <p>We just need to confirm that {{ email }} is your email address. Click below to confirm.</p>
+  <a class="maillink" href="{{ protocol }}://{{ domain }}{% url 'arena:activate' uid token %}">Confirm address</a>
+  <p class="explain">If you received this message in error, someone may have tried to register with your email address. You can safely ignore this email - the registration will not be activated.</p>
+{% endblock %}

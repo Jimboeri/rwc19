@@ -1,0 +1,31 @@
+{% extends "arena/admin/base.html" %}
+
+{% block title %}{{ round.name }} games{% endblock %}
+
+{% block content %}
+<h1>{{ round.name }} - games</h1>
+
+<table>
+  <tr><th>Game</th><th>Date</th><th>Score</th><th>Finished</th><th></th></tr>
+  {% for game in games %}
+    <tr>
+      <td>{{ game }}</td>
+      <td>{{ game.gamedate }}</td>
+      <td>{{ game.score1 }} : {{ game.score2 }}</td>
+      <td>{{ game.finished|yesno:"Yes,No" }}</td>
+      <td><a href="{% url 'arena:game_edit' competition.slug game.id %}">Edit</a></td>
+    </tr>
+  {% endfor %}
+</table>
+
+<div class="admin-panel">
+  <h2>Add a game</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_table }}
+    <button type="submit">Add game</button>
+  </form>
+</div>
+
+<p><a href="{% url 'arena:admin_rounds' competition.slug %}">Back to rounds</a></p>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends "arena/admin/base.html" %}
+
+{% block title %}Rounds - {{ competition.name }}{% endblock %}
+
+{% block content %}
+<h1>Rounds</h1>
+
+<div class="admin-actions">
+  <form method="post" action="{% url 'arena:admin_refresh_rounds' competition.slug %}">
+    {% csrf_token %}
+    <button type="submit">Refresh round statuses</button>
+  </form>
+</div>
+
+<table>
+  <tr><th>Name</th><th>Order</th><th>Status</th><th>Entry fee</th><th></th></tr>
+  {% for round in rounds %}
+    <tr>
+      <td>{{ round.name }}</td>
+      <td>{{ round.order }}</td>
+      <td>{{ round.get_status_display }}</td>
+      <td>{{ round.effective_entry_fee }}</td>
+      <td><a href="{% url 'arena:admin_round_games' competition.slug round.id %}">Games</a></td>
+    </tr>
+  {% endfor %}
+</table>
+
+<div class="admin-panel">
+  <h2>Add a round</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_table }}
+    <button type="submit">Add round</button>
+  </form>
+</div>
+{% endblock %}

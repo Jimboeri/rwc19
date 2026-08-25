@@ -1,0 +1,81 @@
+/* Desktop-oriented stylesheet for competition-admin and superadmin pages.
+   Assumes a laptop-width viewport and dense, table-heavy screens. */
+
+body.arena-admin {
+  font-family: Verdana, Geneva, Arial, sans-serif;
+  background-color: #eef1f6;
+  color: #16213a;
+}
+
+.admin-shell {
+  display: flex;
+  min-height: 100vh;
+}
+
+.admin-sidebar {
+  width: 220px;
+  flex-shrink: 0;
+  background-color: #16213a;
+  color: white;
+  padding: 16px;
+}
+
+.admin-sidebar a {
+  display: block;
+  color: #cfd8e8;
+  text-decoration: none;
+  padding: 8px 4px;
+}
+
+.admin-sidebar a:hover {
+  color: white;
+}
+
+.admin-sidebar .brand {
+  font-weight: bold;
+  color: white;
+  margin-bottom: 16px;
+  display: block;
+}
+
+.admin-main {
+  flex-grow: 1;
+  padding: 24px 32px;
+  max-width: 1100px;
+}
+
+.admin-main table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 12px 0;
+  background: white;
+}
+
+.admin-main th, .admin-main td {
+  border: 1px solid #d7dde8;
+  padding: 6px 10px;
+  text-align: left;
+  font-size: 0.9em;
+}
+
+.admin-main th {
+  background-color: #f3f6fb;
+}
+
+.admin-panel {
+  background: white;
+  border: 1px solid #d7dde8;
+  border-radius: 6px;
+  padding: 16px;
+  margin: 16px 0;
+}
+
+.admin-actions {
+  margin: 12px 0;
+}
+
+.code-editor {
+  width: 100%;
+  font-family: "SF Mono", Consolas, monospace;
+  font-size: 0.85em;
+}

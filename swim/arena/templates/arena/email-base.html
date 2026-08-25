@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title>{% block title %}Arena{% endblock %}</title>
+  <style>
+    body { font-family: Verdana, Geneva, Arial, sans-serif; }
+    .maillink {
+      display: inline-block;
+      padding: 10px 16px;
+      background-color: #1a5fb4;
+      color: white !important;
+      text-decoration: none;
+      border-radius: 6px;
+    }
+    .explain { font-size: 0.85em; color: #666; }
+    .footer { text-align: center; color: #999; font-size: 12px; margin-top: 20px; }
+  </style>
+</head>
+<body>
+  {% block email-body %}{% endblock %}
+  <div class="footer">Arena prediction competitions</div>
+</body>
+</html>

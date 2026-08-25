@@ -1,0 +1,18 @@
+{% extends "arena/player/base.html" %}
+
+{% block title %}Sign up{% endblock %}
+
+{% block content %}
+<h1>Sign up</h1>
+{% if messages %}
+  {% for message in messages %}<div class="card">{{ message }}</div>{% endfor %}
+{% endif %}
+<div class="card">
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn">Sign up</button>
+  </form>
+</div>
+<p><a href="{% url 'arena:login' %}">Already have an account? Login</a></p>
+{% endblock %}

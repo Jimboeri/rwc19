@@ -1,0 +1,53 @@
+{% extends "arena/player/base.html" %}
+
+{% block title %}{{ competition.name }}{% endblock %}
+
+{% block content %}
+<h1>{{ competition.name }}</h1>
+
+{% if current_round %}
+  <h2>{{ current_round.name }}</h2>
+
+  {% if player_round %}
+    <div class="card">
+      {% if predictions %}
+        <table>
+          <tr><th>Game</th><th>Score</th><th>Your pick</th><th>Points</th></tr>
+          {% for pick in predictions %}
+            <tr>
+              <td><a href="{% url 'arena:game_view' competition.slug pick.game.id %}">{{ pick.game }}</a></td>
+              <td>{% if pick.game.finished %}{{ pick.game.score1 }} : {{ pick.game.score2 }}{% endif %}</td>
+              <td>{{ pick.result_text }}</td>
+              <td>
+                {% if pick.game.finished %}
+                  <a href="{% url 'arena:points_view' competition.slug pick.id %}">{{ pick.points|floatformat }}</a>
+                {% endif %}
+              </td>
+            </tr>
+          {% endfor %}
+        </table>
+      {% else %}
+        <p>No games in this round yet.</p>
+      {% endif %}
+    </div>
+    <p><a class="btn" href="{% url 'arena:pick_update' competition.slug current_round.id %}">Change my picks</a></p>
+  {% else %}
+    <p>You're viewing as an administrator - you don't have picks in this round.</p>
+  {% endif %}
+
+  <h2>Leaderboard</h2>
+  <div class="card">
+    <table>
+      <tr><th>Player</th><th>Points</th></tr>
+      {% for entry in leaderboard %}
+        <tr>
+          <td><a href="{% url 'arena:player_details' competition.slug entry.membership.user.id %}">{{ entry.membership.user.first_name|title }} {{ entry.membership.user.last_name|title }}</a></td>
+          <td>{{ entry.total_points|floatformat }}</td>
+        </tr>
+      {% endfor %}
+    </table>
+  </div>
+{% else %}
+  <p>There's no current round yet - check back soon.</p>
+{% endif %}
+{% endblock %}

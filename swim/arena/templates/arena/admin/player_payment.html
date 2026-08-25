@@ -1,0 +1,31 @@
+{% extends "arena/admin/base.html" %}
+
+{% block title %}Payments - {{ player.first_name|title }} {{ player.last_name|title }}{% endblock %}
+
+{% block content %}
+<h1>Payments - {{ player.first_name|title }} {{ player.last_name|title }}</h1>
+
+<form method="post" action="{% url 'arena:admin_player_full_payment' competition.slug player.id %}">
+  {% csrf_token %}
+  <button type="submit">Mark fully paid</button>
+</form>
+
+<form method="post">
+  {% csrf_token %}
+  {{ formset.management_form }}
+  {{ formset.non_field_errors }}
+  <table>
+    <tr><th>Round</th><th>Paid</th><th>Amount</th></tr>
+    {% for form in formset %}
+      <tr>
+        <td>{{ form.instance.round }}</td>
+        <td>{{ form.paid }}</td>
+        <td>{{ form.paid_amount }}</td>
+        {{ form.id }}
+      </tr>
+    {% endfor %}
+  </table>
+  <button type="submit">Save</button>
+  <a href="{% url 'arena:admin_players' competition.slug %}">Back</a>
+</form>
+{% endblock %}

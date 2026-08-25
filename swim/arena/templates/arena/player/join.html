@@ -1,0 +1,14 @@
+{% extends "arena/player/base.html" %}
+
+{% block title %}Join {{ competition.name }}{% endblock %}
+
+{% block content %}
+<h1>Join {{ competition.name }}</h1>
+<div class="card">
+  <p>{{ competition.description }}</p>
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn">Join this competition</button>
+  </form>
+</div>
+{% endblock %}

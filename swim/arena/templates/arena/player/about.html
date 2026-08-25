@@ -1,0 +1,15 @@
+{% extends "arena/player/base.html" %}
+
+{% block title %}About {{ competition.name }}{% endblock %}
+
+{% block content %}
+<h1>About {{ competition.name }}</h1>
+<div class="card">
+  <p>{{ competition.description|linebreaks }}</p>
+  <table>
+    <tr><td>Type</td><td>{{ competition.get_kind_display }}</td></tr>
+    <tr><td>Entry fee (per round, unless overridden)</td><td>{{ competition.default_entry_fee }}</td></tr>
+  </table>
+</div>
+<p>Scoring for this competition is calculated automatically once a game is marked finished. Ask a competition administrator if you'd like to see exactly how points are calculated.</p>
+{% endblock %}

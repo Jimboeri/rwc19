@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "WebFetch(domain:gorules.io)",
+      "WebFetch(domain:docs.gorules.io)",
+      "WebFetch(domain:deepwiki.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:pypi.org)",
+      "Bash(docker run --rm jimboeri/rwc19 python -c ' *)"
+    ]
+  }
+}

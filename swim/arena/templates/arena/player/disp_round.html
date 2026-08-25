@@ -1,0 +1,38 @@
+{% extends "arena/player/base.html" %}
+
+{% block title %}{{ round.name }}{% endblock %}
+
+{% block content %}
+<h1>{{ player.first_name|title }} {{ player.last_name|title }} - {{ round.name }}</h1>
+
+<div class="card">
+  <table>
+    <tr><th>Game</th><th>Score</th><th>Pick</th><th>Points</th></tr>
+    {% for pick in predictions %}
+      <tr>
+        <td><a href="{% url 'arena:game_view' competition.slug pick.game.id %}">{{ pick.game }}</a></td>
+        <td>{% if pick.game.finished %}{{ pick.game.score1 }} : {{ pick.game.score2 }}{% endif %}</td>
+        <td>{{ pick.result_text }}</td>
+        <td>
+          {% if pick.game.finished %}
+            <a href="{% url 'arena:points_view' competition.slug pick.id %}">{{ pick.points|floatformat }}</a>
+          {% endif %}
+        </td>
+      </tr>
+    {% endfor %}
+  </table>
+</div>
+
+<h2>Leaderboard</h2>
+<div class="card">
+  <table>
+    <tr><th>Player</th><th>Points</th></tr>
+    {% for entry in leaderboard %}
+      <tr>
+        <td>{{ entry.membership.user.first_name|title }} {{ entry.membership.user.last_name|title }}</td>
+        <td>{{ entry.total_points|floatformat }}</td>
+      </tr>
+    {% endfor %}
+  </table>
+</div>
+{% endblock %}

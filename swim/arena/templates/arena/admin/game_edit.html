@@ -1,0 +1,43 @@
+{% extends "arena/admin/base.html" %}
+
+{% block title %}Edit {{ game }}{% endblock %}
+
+{% block content %}
+<h1>{{ game.team1 }} v {{ game.team2 }}</h1>
+
+<form method="post">
+  {% csrf_token %}
+  {{ formset.management_form }}
+  {{ game_form.non_field_errors }}
+
+  <div class="admin-panel">
+    <table>
+      {{ game_form.as_table }}
+    </table>
+  </div>
+
+  <h2>Player picks</h2>
+  <table class="formtable">
+    <tr>
+      <th>Player</th>
+      <th>Result</th>
+      <th>Spread</th>
+      <th>Points</th>
+      <th>Override</th>
+    </tr>
+    {% for form in formset %}
+      <tr>
+        <td>{{ form.instance.player_round.membership.user.first_name|title }} {{ form.instance.player_round.membership.user.last_name|title }}</td>
+        <td>{{ form.result }}</td>
+        <td>{{ form.spread }}</td>
+        <td>{{ form.instance.points|floatformat }}</td>
+        <td>{{ form.override }}</td>
+        {{ form.id }}
+      </tr>
+    {% endfor %}
+  </table>
+
+  <button type="submit">Save</button>
+  <a href="{% url 'arena:game_view' competition.slug game.id %}">Cancel</a>
+</form>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends "arena/player/base.html" %}
+
+{% block title %}Update picks{% endblock %}
+
+{% block content %}
+<h1>Update your picks - {{ round.name }}</h1>
+
+<form method="post">
+  {% csrf_token %}
+  {{ formset.management_form }}
+  {{ formset.non_field_errors }}
+  <div class="card">
+    {% for form in formset %}
+      <div class="pick-row">
+        <strong>{{ form.instance.game }}</strong><br>
+        {{ form.id }}
+        {{ form.result }}
+        <span class="{% if form.instance.result == 3 %}hideItem{% else %}showItem{% endif %}">
+          {{ form.spread }}
+        </span>
+        {{ form.errors }}
+      </div>
+      <hr>
+    {% endfor %}
+  </div>
+  <button type="submit" class="btn">Submit picks</button>
+  <a class="btn secondary" href="{% url 'arena:competition_home' competition.slug %}">Cancel</a>
+</form>
+
+{% if past_predictions %}
+  <h2>Past predictions</h2>
+  <div class="card">
+    <table>
+      <tr><th>Game</th><th>Score</th><th>Your pick</th><th>Points</th></tr>
+      {% for pred in past_predictions %}
+        <tr>
+          <td>{{ pred.game }}</td>
+          <td>{{ pred.game.score1 }} : {{ pred.game.score2 }}</td>
+          <td>{{ pred.result_text }}</td>
+          <td>{{ pred.points|floatformat }}</td>
+        </tr>
+      {% endfor %}
+    </table>
+  </div>
+{% endif %}
+{% endblock %}

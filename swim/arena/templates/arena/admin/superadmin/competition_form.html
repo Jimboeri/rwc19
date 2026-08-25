@@ -1,0 +1,22 @@
+{% extends "arena/admin/base.html" %}
+
+{% block title %}{% if competition %}Edit {{ competition.name }}{% else %}New competition{% endif %}{% endblock %}
+
+{% block content %}
+<h1>{% if competition %}Edit {{ competition.name }}{% else %}New competition{% endif %}</h1>
+
+<form method="post">
+  {% csrf_token %}
+  <table>
+    {{ form.as_table }}
+  </table>
+  <p class="admin-panel">
+    Scoring rules are a GoRules ZEN Engine JDM decision graph (JSON). See
+    <code>swim/arena/rules/example_margin_scoring.json</code> in the repo for a worked
+    example reproducing the classic win-margin/draw scoring - paste and adapt it here.
+    Predictions in this competition cannot be scored until this is set.
+  </p>
+  <button type="submit">Save</button>
+  <a href="{% url 'arena:superadmin_competitions' %}">Back</a>
+</form>
+{% endblock %}

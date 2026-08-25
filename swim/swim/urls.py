@@ -20,5 +20,8 @@ urlpatterns = [
     path('rwc19/', include('rwc19.urls')),
     path('rwc23/', include('rwc23.urls')),
     path('admin/', admin.site.urls),
+    # Kept for rwc19/rwc23: their `@login_required` views redirect anonymous
+    # users to settings.LOGIN_URL ("/accounts/login"), which this provides.
     path('accounts/', include('django.contrib.auth.urls')),
+    path('', include('arena.urls')),
 ]

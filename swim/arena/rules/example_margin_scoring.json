@@ -1,0 +1,77 @@
+{
+  "nodes": [
+    {
+      "id": "input1",
+      "name": "Prediction Facts",
+      "type": "inputNode",
+      "position": { "x": 0, "y": 0 }
+    },
+    {
+      "id": "table1",
+      "name": "Margin Scoring",
+      "type": "decisionTableNode",
+      "position": { "x": 300, "y": 0 },
+      "content": {
+        "hitPolicy": "first",
+        "inputs": [
+          {
+            "id": "isDraw",
+            "name": "Correct Draw",
+            "type": "expression",
+            "field": "actualResult == 3 and predictedResult == 3"
+          },
+          {
+            "id": "correctWin",
+            "name": "Correct Winner Pick",
+            "type": "expression",
+            "field": "actualResult == predictedResult and actualResult != 0 and actualResult != 3"
+          },
+          {
+            "id": "marginDiff",
+            "name": "Margin Difference",
+            "type": "expression",
+            "field": "abs(predictedSpread - actualSpread)"
+          }
+        ],
+        "outputs": [
+          {
+            "id": "points",
+            "name": "Points",
+            "type": "expression",
+            "field": "points"
+          }
+        ],
+        "rules": [
+          { "_id": "r1", "isDraw": "true", "correctWin": "", "marginDiff": "", "points": "25" },
+          { "_id": "r2", "isDraw": "", "correctWin": "true", "marginDiff": "0", "points": "20" },
+          { "_id": "r3", "isDraw": "", "correctWin": "true", "marginDiff": "1", "points": "19" },
+          { "_id": "r4", "isDraw": "", "correctWin": "true", "marginDiff": "2", "points": "18" },
+          { "_id": "r5", "isDraw": "", "correctWin": "true", "marginDiff": "3", "points": "17" },
+          { "_id": "r6", "isDraw": "", "correctWin": "true", "marginDiff": "4", "points": "16" },
+          { "_id": "r7", "isDraw": "", "correctWin": "true", "marginDiff": "5", "points": "15" },
+          { "_id": "r8", "isDraw": "", "correctWin": "true", "marginDiff": "6", "points": "14" },
+          { "_id": "r9", "isDraw": "", "correctWin": "true", "marginDiff": "7", "points": "13" },
+          { "_id": "r10", "isDraw": "", "correctWin": "true", "marginDiff": "8", "points": "12" },
+          { "_id": "r11", "isDraw": "", "correctWin": "true", "marginDiff": "9", "points": "11" },
+          { "_id": "r12", "isDraw": "", "correctWin": "true", "marginDiff": "10", "points": "10" },
+          { "_id": "r13", "isDraw": "", "correctWin": "true", "marginDiff": "11", "points": "9" },
+          { "_id": "r14", "isDraw": "", "correctWin": "true", "marginDiff": "12", "points": "8" },
+          { "_id": "r15", "isDraw": "", "correctWin": "true", "marginDiff": "13", "points": "7" },
+          { "_id": "r16", "isDraw": "", "correctWin": "true", "marginDiff": "14", "points": "6" },
+          { "_id": "r17", "isDraw": "", "correctWin": "true", "marginDiff": "", "points": "5" },
+          { "_id": "r18", "isDraw": "", "correctWin": "", "marginDiff": "", "points": "0" }
+        ]
+      }
+    },
+    {
+      "id": "output1",
+      "name": "Score Result",
+      "type": "outputNode",
+      "position": { "x": 600, "y": 0 }
+    }
+  ],
+  "edges": [
+    { "id": "edge1", "type": "edge", "sourceId": "input1", "targetId": "table1" },
+    { "id": "edge2", "type": "edge", "sourceId": "table1", "targetId": "output1" }
+  ]
+}

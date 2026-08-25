@@ -1,0 +1,11 @@
+{% extends "arena/player/base.html" %}
+
+{% block title %}Check your email{% endblock %}
+
+{% block content %}
+<h1>Almost there</h1>
+<div class="card">
+  <p>Thanks for signing up. We've emailed you an activation link.</p>
+  <p>Click the link in that email, then <a href="{% url 'arena:login' %}">login</a> to start joining competitions.</p>
+</div>
+{% endblock %}

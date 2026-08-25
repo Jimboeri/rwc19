@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.humanize', # for humanize template tags
     'rwc19.apps.Rwc19Config',
     'rwc23.apps.Rwc23Config',
+    'arena.apps.ArenaConfig',
 ]
 
 MIDDLEWARE = [
@@ -67,6 +68,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'arena.context_processors.competition',
             ],
         },
     },
@@ -163,9 +165,14 @@ STATIC_URL = '/static/'
 STATIC_ROOT = '/code/swim/static/'
 
 # Login settings
-LOGOUT_REDIRECT_URL = "rwc23:index"
+# NOTE: LOGIN_URL is left as the original generic `/accounts/login` target
+# (see the top-level `accounts/` include in swim/urls.py) because rwc19 and
+# rwc23's own `@login_required` views depend on it for their redirect-when-
+# anonymous behavior. arena's own views pass `login_url="arena:login"`
+# explicitly instead of relying on this shared default - see arena/permissions.py.
+LOGOUT_REDIRECT_URL = "arena:login"
 LOGIN_URL = "/accounts/login"
-LOGIN_REDIRECT_URL = "rwc23:index"
+LOGIN_REDIRECT_URL = "arena:dashboard"
 
 # Email settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

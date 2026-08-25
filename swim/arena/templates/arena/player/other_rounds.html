@@ -1,0 +1,12 @@
+{% extends "arena/player/base.html" %}
+
+{% block title %}Rounds{% endblock %}
+
+{% block content %}
+<h1>Rounds</h1>
+<div class="card competition-list">
+  {% for round in rounds %}
+    <a href="{% url 'arena:disp_round' competition.slug user.id round.id %}">{{ round.name }}</a>
+  {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% load static %}
+<!doctype html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="{% static 'arena/admin.css' %}">
+    <script src="{% static 'arena/basic.js' %}"></script>
+    <title>{% block title %}Arena admin{% endblock %}</title>
+  </head>
+  <body class="arena-admin">
+    <div class="admin-shell">
+      <div class="admin-sidebar">
+        <a href="{% url 'arena:dashboard' %}" class="brand">Arena admin</a>
+        {% if competition %}
+          <p>{{ competition.name }}</p>
+          <a href="{% url 'arena:competition_home' competition.slug %}">Player view</a>
+          <a href="{% url 'arena:admin_players' competition.slug %}">Players</a>
+          <a href="{% url 'arena:admin_teams' competition.slug %}">Teams</a>
+          <a href="{% url 'arena:admin_rounds' competition.slug %}">Rounds & games</a>
+        {% endif %}
+        {% if user.is_superuser %}
+          <hr>
+          <a href="{% url 'arena:superadmin_competitions' %}">All competitions</a>
+        {% endif %}
+        <hr>
+        <a href="{% url 'arena:logout' %}">Logout</a>
+      </div>
+      <div class="admin-main">
+        {% if messages %}
+          {% for message in messages %}
+            <div class="admin-panel">{{ message }}</div>
+          {% endfor %}
+        {% endif %}
+        {% block content %}{% endblock %}
+      </div>
+    </div>
+  </body>
+</html>

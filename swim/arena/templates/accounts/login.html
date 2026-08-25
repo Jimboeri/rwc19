@@ -1,0 +1,21 @@
+{% extends "arena/player/base.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<h1>Login</h1>
+{% if messages %}
+  {% for message in messages %}<div class="card">{{ message }}</div>{% endfor %}
+{% endif %}
+<div class="card">
+  <form method="post">
+    {% csrf_token %}
+    <input type="hidden" name="next" value="{{ next }}">
+    <p><label>Email<br><input type="text" name="username" required></label></p>
+    <p><label>Password<br><input type="password" name="password" required></label></p>
+    <button type="submit" class="btn">Login</button>
+  </form>
+</div>
+<p><a href="{% url 'arena:password_reset' %}">Forgot password?</a></p>
+<p><a href="{% url 'arena:signup' %}">Create an account</a></p>
+{% endblock %}

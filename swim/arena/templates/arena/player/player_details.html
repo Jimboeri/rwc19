@@ -1,0 +1,18 @@
+{% extends "arena/player/base.html" %}
+
+{% block title %}{{ player.first_name|title }} {{ player.last_name|title }}{% endblock %}
+
+{% block content %}
+<h1>{{ player.first_name|title }} {{ player.last_name|title }}</h1>
+<div class="card">
+  <table>
+    <tr><th>Round</th><th>Points</th></tr>
+    {% for player_round in membership.player_rounds.all %}
+      <tr>
+        <td><a href="{% url 'arena:disp_round' competition.slug player.id player_round.round.id %}">{{ player_round.round.name }}</a></td>
+        <td>{{ player_round.total_points|floatformat }}</td>
+      </tr>
+    {% endfor %}
+  </table>
+</div>
+{% endblock %}

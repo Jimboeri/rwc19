@@ -1,0 +1,20 @@
+{% extends "arena/admin/base.html" %}
+
+{% block title %}Players - {{ competition.name }}{% endblock %}
+
+{% block content %}
+<h1>Players</h1>
+
+<table>
+  <tr><th></th><th>Name</th><th>Role</th><th></th><th></th></tr>
+  {% for membership in memberships %}
+    <tr>
+      <td>{% if membership.fully_paid %}<span class="badge">Fully paid</span>{% endif %}</td>
+      <td>{{ membership.user.first_name|title }} {{ membership.user.last_name|title }}</td>
+      <td>{{ membership.get_role_display }}</td>
+      <td><a href="{% url 'arena:admin_player_payment' competition.slug membership.user.id %}">Payments</a></td>
+      <td><a href="{% url 'arena:admin_player_detail' competition.slug membership.user.id %}">Details</a></td>
+    </tr>
+  {% endfor %}
+</table>
+{% endblock %}

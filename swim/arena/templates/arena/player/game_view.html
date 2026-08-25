@@ -1,0 +1,36 @@
+{% extends "arena/player/base.html" %}
+
+{% block title %}{{ game }}{% endblock %}
+
+{% block content %}
+<h1>{{ game.round.name }} - {{ game }}</h1>
+
+{% if is_admin %}
+  <p><a class="btn secondary" href="{% url 'arena:game_edit' competition.slug game.id %}">Edit game & picks</a></p>
+{% endif %}
+
+<div class="card">
+  <table>
+    <tr><td>Date</td><td>{{ game.gamedate }}</td></tr>
+    <tr><td>{{ game.team1 }} score</td><td>{{ game.score1 }}</td></tr>
+    <tr><td>{{ game.team2 }} score</td><td>{{ game.score2 }}</td></tr>
+    <tr><td>Status</td><td>{% if game.finished %}Finished{% else %}Not finished{% endif %}</td></tr>
+  </table>
+</div>
+
+<h2>Player picks</h2>
+<div class="card">
+  <table>
+    <tr><th>Player</th><th>Pick</th>{% if game.finished %}<th>Points</th>{% endif %}</tr>
+    {% for pick in picks %}
+      <tr>
+        <td>{{ pick.player_round.membership.user.first_name|title }} {{ pick.player_round.membership.user.last_name|title }}</td>
+        <td>{{ pick.result_text }}</td>
+        {% if game.finished %}
+          <td><a href="{% url 'arena:points_view' competition.slug pick.id %}">{{ pick.points|floatformat }}</a></td>
+        {% endif %}
+      </tr>
+    {% endfor %}
+  </table>
+</div>
+{% endblock %}

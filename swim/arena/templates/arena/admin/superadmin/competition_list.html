@@ -1,0 +1,24 @@
+{% extends "arena/admin/base.html" %}
+
+{% block title %}Competitions{% endblock %}
+
+{% block content %}
+<h1>Competitions</h1>
+<p><a href="{% url 'arena:superadmin_competition_create' %}">New competition</a></p>
+
+<table>
+  <tr><th>Name</th><th>Kind</th><th>Status</th><th>Visibility</th><th></th></tr>
+  {% for competition in competitions %}
+    <tr>
+      <td>{{ competition.name }}</td>
+      <td>{{ competition.get_kind_display }}</td>
+      <td>{{ competition.get_status_display }}</td>
+      <td>{{ competition.get_visibility_display }}</td>
+      <td>
+        <a href="{% url 'arena:superadmin_competition_edit' competition.slug %}">Edit</a>
+        <a href="{% url 'arena:superadmin_competition_admins' competition.slug %}">Admins</a>
+      </td>
+    </tr>
+  {% endfor %}
+</table>
+{% endblock %}

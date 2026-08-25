@@ -1,0 +1,33 @@
+{% extends "arena/admin/base.html" %}
+
+{% block title %}Teams - {{ competition.name }}{% endblock %}
+
+{% block content %}
+<h1>Teams</h1>
+
+<table>
+  <tr><th>Name</th><th>Pool</th><th>Code</th><th></th></tr>
+  {% for team in teams %}
+    <tr>
+      <td>{{ team.name }}</td>
+      <td>{{ team.pool }}</td>
+      <td>{{ team.code }}</td>
+      <td>
+        <form method="post" action="{% url 'arena:admin_team_delete' competition.slug team.id %}" onsubmit="return confirm('Delete this team?');">
+          {% csrf_token %}
+          <button type="submit">Delete</button>
+        </form>
+      </td>
+    </tr>
+  {% endfor %}
+</table>
+
+<div class="admin-panel">
+  <h2>Add a team</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_table }}
+    <button type="submit">Add team</button>
+  </form>
+</div>
+{% endblock %}

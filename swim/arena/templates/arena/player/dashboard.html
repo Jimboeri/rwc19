@@ -1,0 +1,35 @@
+{% extends "arena/player/base.html" %}
+
+{% block title %}My competitions{% endblock %}
+
+{% block content %}
+<h1>My competitions</h1>
+
+{% if memberships %}
+  <div class="card competition-list">
+    {% for membership in memberships %}
+      <a href="{% url 'arena:competition_home' membership.competition.slug %}">
+        {{ membership.competition.name }}
+        {% if membership.role == "ADMIN" %}<span class="badge">Admin</span>{% endif %}
+      </a>
+    {% endfor %}
+  </div>
+{% else %}
+  <p>You haven't joined any competitions yet.</p>
+{% endif %}
+
+<h2>Join a competition</h2>
+{% if joinable %}
+  <div class="card competition-list">
+    {% for comp in joinable %}
+      <a href="{% url 'arena:join' comp.slug %}">{{ comp.name }} <em>({{ comp.get_kind_display }})</em></a>
+    {% endfor %}
+  </div>
+{% else %}
+  <p>No public competitions are open to join right now.</p>
+{% endif %}
+
+{% if user.is_superuser %}
+  <p><a class="btn secondary" href="{% url 'arena:superadmin_competitions' %}">Manage competitions</a></p>
+{% endif %}
+{% endblock %}

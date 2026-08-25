@@ -1,0 +1,8 @@
+{% extends "arena/player/base.html" %}
+
+{% block title %}Logged out{% endblock %}
+
+{% block content %}
+<h1>Logged out</h1>
+<p>You are logged out. <a href="{% url 'arena:login' %}">Click here</a> to login again.</p>
+{% endblock %}

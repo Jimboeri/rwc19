@@ -1,0 +1,33 @@
+{% extends "arena/admin/base.html" %}
+
+{% block title %}Admins - {{ competition.name }}{% endblock %}
+
+{% block content %}
+<h1>Administrators - {{ competition.name }}</h1>
+
+<table>
+  <tr><th>Name</th><th>Email</th><th></th></tr>
+  {% for admin in admins %}
+    <tr>
+      <td>{{ admin.user.first_name|title }} {{ admin.user.last_name|title }}</td>
+      <td>{{ admin.user.email }}</td>
+      <td>
+        <form method="post" action="{% url 'arena:superadmin_competition_admin_remove' competition.slug admin.id %}" onsubmit="return confirm('Remove admin rights?');">
+          {% csrf_token %}
+          <button type="submit">Remove</button>
+        </form>
+      </td>
+    </tr>
+  {% endfor %}
+</table>
+
+<div class="admin-panel">
+  <h2>Add an administrator</h2>
+  <p>The user must already have an account (they can sign up first, then be added here).</p>
+  <form method="post">
+    {% csrf_token %}
+    <label>Email <input type="email" name="email" required></label>
+    <button type="submit">Add as administrator</button>
+  </form>
+</div>
+{% endblock %}

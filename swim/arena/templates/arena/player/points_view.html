@@ -1,0 +1,22 @@
+{% extends "arena/player/base.html" %}
+
+{% block title %}Points{% endblock %}
+
+{% block content %}
+<h1>Points for {{ prediction.game }}</h1>
+
+<div class="card">
+  <table>
+    <tr><td>Player</td><td>{{ prediction.player_round.membership.user.first_name|title }} {{ prediction.player_round.membership.user.last_name|title }}</td></tr>
+    <tr><td>Game</td><td>{{ prediction.game }}</td></tr>
+    {% if prediction.game.finished %}
+      <tr><td>Score</td><td>{{ prediction.game.team1 }} {{ prediction.game.score1 }} : {{ prediction.game.score2 }} {{ prediction.game.team2 }}</td></tr>
+      <tr><td>Result</td><td>{{ prediction.game.result_text }}</td></tr>
+    {% endif %}
+    <tr><td>Your pick</td><td>{{ prediction.result_text }}</td></tr>
+    <tr><td>Points awarded</td><td><strong>{{ prediction.points|floatformat }}</strong></td></tr>
+  </table>
+</div>
+
+<p><a class="btn secondary" href="{% url 'arena:about' competition.slug %}">How scoring works in this competition</a></p>
+{% endblock %}
